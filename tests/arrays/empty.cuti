@@ -1,0 +1,7 @@
+var arr := []
+
+for x in arr loop
+    print x
+end
+
+// Expected result:

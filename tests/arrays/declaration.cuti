@@ -1,0 +1,11 @@
+var arr := [5, 10, 20]
+
+for x in arr loop
+    print x
+end
+
+/* Expected result:
+5
+10
+20
+*/

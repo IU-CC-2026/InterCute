@@ -1,0 +1,5 @@
+var s := "hello"
+
+print s - "o"
+
+// Expected result: Runtime Error

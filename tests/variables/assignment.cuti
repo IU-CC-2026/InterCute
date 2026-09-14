@@ -1,0 +1,12 @@
+var x := 10
+
+print x
+
+x := 30
+
+print x
+
+/* Expected result:
+10
+30
+*/

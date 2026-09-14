@@ -1,0 +1,16 @@
+var tup := {a := 10, 2.5, c := '3'}
+
+for x in tup loop
+    print x
+end
+
+print tup.a
+print tup.2
+
+/* Expected result:
+10
+2.5
+3
+10
+2.5
+*/

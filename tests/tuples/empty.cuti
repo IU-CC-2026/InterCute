@@ -1,0 +1,7 @@
+var tup := {}
+
+for x in tup loop
+    print x
+end
+
+// Expected result:

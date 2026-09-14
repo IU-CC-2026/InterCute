@@ -1,0 +1,3 @@
+print 5 / 0
+
+// Expected result: Runtime Error

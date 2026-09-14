@@ -1,0 +1,5 @@
+var s := ""
+
+print s
+
+// Expected result:

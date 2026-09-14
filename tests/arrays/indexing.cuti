@@ -1,0 +1,9 @@
+var arr := [5, 10, 20]
+
+print arr[1]
+print arr[3]
+
+/* Expected result:
+5
+20
+*/

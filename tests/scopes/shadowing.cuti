@@ -1,0 +1,15 @@
+var x := 10
+
+if x > 5 then
+    var x := 5
+    print x
+else
+    print x
+end
+
+print x
+
+/* Expected result:
+5
+10
+*/

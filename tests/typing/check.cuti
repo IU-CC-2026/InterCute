@@ -1,0 +1,27 @@
+var x := 1.5
+
+print x is real
+
+x := 3
+
+print x is int
+
+x := false
+
+print x is bool
+
+x := 'hi'
+
+print x is string
+
+x := none
+
+print x is none
+
+/* Expected result:
+true
+true
+true
+true
+true
+*/

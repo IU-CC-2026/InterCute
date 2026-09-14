@@ -1,0 +1,12 @@
+var x := 10
+
+print x + 5
+
+x := "hello"
+
+print x + " world"
+
+/* Expected result:
+15
+hello world
+*/

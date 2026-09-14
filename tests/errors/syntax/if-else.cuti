@@ -1,0 +1,4 @@
+if true then
+    print 1
+
+// Expected result: Syntax Error

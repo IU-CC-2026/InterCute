@@ -1,0 +1,5 @@
+var x := none
+
+print x
+
+// Expected result: none

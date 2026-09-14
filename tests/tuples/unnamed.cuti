@@ -1,0 +1,14 @@
+var tup := {1, 2, 3}
+
+for x in tup loop
+    print x
+end
+
+print tup.2
+
+/* Expected result:
+1
+2
+3
+2
+*/
