@@ -1,0 +1,6 @@
+loop 
+    print "Hello World!"
+    exit
+end
+
+// Expected result: Hello, World!

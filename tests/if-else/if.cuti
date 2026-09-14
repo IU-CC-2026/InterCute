@@ -1,0 +1,10 @@
+var x := -4
+var y := 3
+
+if x > y then
+    print x
+else
+    print y
+end
+
+// Expected result: 3

@@ -1,0 +1,12 @@
+var max := func(a, b)
+    is
+        if a > b then
+            return a
+        else
+            return b
+        end
+    end
+
+print max(10, 20)
+
+// Expected result: 20

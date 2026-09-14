@@ -1,0 +1,5 @@
+var x
+
+print x
+
+// Expected result: none

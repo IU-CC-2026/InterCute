@@ -1,0 +1,5 @@
+var add := func(a, b) => a + b
+
+print add(2, 3)
+
+// Expected result: 5

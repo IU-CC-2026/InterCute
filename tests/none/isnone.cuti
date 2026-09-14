@@ -1,0 +1,5 @@
+var x
+
+print x is none
+
+// Expected result: true

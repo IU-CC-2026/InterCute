@@ -1,0 +1,5 @@
+var s := "hello"
+
+print s
+
+// Expected result: hello

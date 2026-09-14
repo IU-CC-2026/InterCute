@@ -1,0 +1,19 @@
+var tup1 := {a := "hello", "hi", 2, 10.9}
+var tup2 := {3, 4, true, b := false}
+
+var merged := tup1 + tup2
+
+for x in merged loop
+    print x
+end
+
+/* Expected result:
+hello
+hi
+2
+10.9
+3
+4
+true
+false
+*/

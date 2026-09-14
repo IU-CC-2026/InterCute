@@ -1,0 +1,6 @@
+for loop
+    print "stop"
+    exit
+end
+
+// Expected result: stop

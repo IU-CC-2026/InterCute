@@ -1,0 +1,8 @@
+var s1 := 'good'
+var s2 := "job"
+
+var merged := s1 + " " + s2
+
+print merged
+
+// Expected result: good job

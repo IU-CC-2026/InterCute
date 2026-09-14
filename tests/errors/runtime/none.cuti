@@ -1,0 +1,5 @@
+var x
+
+print x + 10
+
+// Expected result: Runtime Error
