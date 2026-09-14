@@ -1,0 +1,17 @@
+var t1 := {1, 2}
+var t2 := {"hello", "world"}
+
+var arr := [t1, t2]
+
+for tup in arr loop
+    for x in tup loop
+        print x
+    end
+end
+
+/* Expected result:
+1
+2
+hello
+world
+*/

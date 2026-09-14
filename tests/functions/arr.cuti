@@ -1,0 +1,15 @@
+var sum := func(arr)
+    is
+        total_sum := 0;
+        for x in arr loop
+            total_sum := total_sum + x;
+        end
+
+        return total_sum;
+    end
+
+var arr := [1, 10, 8, -5];
+
+print sum(arr);
+
+// Expected result: 14

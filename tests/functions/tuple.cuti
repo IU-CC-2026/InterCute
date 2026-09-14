@@ -1,0 +1,24 @@
+var make_tup := func(num, count)
+    is
+        result_tup := {}
+
+        for i in 1..count loop
+            result_tup := result_tup + {num}
+        end
+
+        return result_tup
+    end
+
+var tup := make_tup(3, 5)
+
+for x in tup loop
+    print x
+end
+
+/* Expected result:
+3
+3
+3
+3
+3
+*/
