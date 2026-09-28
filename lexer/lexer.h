@@ -84,6 +84,7 @@ class Lexer {
 public:
     unsigned int pos;
     std::string src_code;
+    TokenType previous_token_type;
 
     std::unordered_map<std::string, TokenType> keywords;
     std::unordered_map<char, TokenType> delimiters;
@@ -92,6 +93,8 @@ public:
     Lexer(const std::string& src_code);
 
     Token get_token();
+
+    Token remember_token(Token token);
 
     std::vector<Token> tokenize();
 

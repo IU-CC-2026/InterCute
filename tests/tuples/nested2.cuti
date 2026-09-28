@@ -1,0 +1,5 @@
+var tup := {2, a := {c := {b := {d := {2, 8}, 28}, b := 6}, 3}, 10};
+
+print tup.a.1.b.1.2
+
+// Expected result: 8
