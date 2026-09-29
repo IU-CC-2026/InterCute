@@ -1,0 +1,5 @@
+var x := /* comment */ 10
+
+print x
+
+// Expected result: 10

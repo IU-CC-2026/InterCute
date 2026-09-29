@@ -1,3 +1,6 @@
+#pragma once
+
+
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -77,12 +80,18 @@ enum class TokenType {
 struct Token {
     TokenType type;
     std::string value;
+
+    unsigned int line;
+    unsigned int column;
 };
 
 
 class Lexer {
 public:
     unsigned int pos;
+    unsigned int line;
+    unsigned int column;
+
     std::string src_code;
     TokenType previous_token_type;
 
@@ -98,21 +107,31 @@ public:
 
     std::vector<Token> tokenize();
 
-    Token read_identifier();
+    Token read_identifier(unsigned int start_column);
 
-    Token read_number();
+    Token read_number(unsigned int start_column);
 
-    Token read_string();
+    Token read_string(unsigned int start_column);
 
-    Token read_operator();
+    Token read_operator(unsigned int start_column);
 
-    Token read_delimiter();
+    Token read_delimiter(unsigned int start_column);
+
+    void skip_comment();
 };
 
 
 class SyntaxError: public std::runtime_error {
 public:
-    SyntaxError(const std::string& message) : std::runtime_error(message) {};
+    SyntaxError(
+        unsigned int line,
+        unsigned int column,
+        const std::string& message
+    ) : std::runtime_error(
+        "Lexer error at line " + std::to_string(line) +
+        ", column " + std::to_string(column) +
+        ": " + message
+    ) {}
 };
 
 std::string token_type_to_string(TokenType type);
