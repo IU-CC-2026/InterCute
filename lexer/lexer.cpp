@@ -3,6 +3,9 @@
 
 Lexer::Lexer(const std::string& src_code) {
     this->pos = 0;
+    this->line = 1;
+    this->column = 1;
+
     this->src_code = src_code;
     this->previous_token_type = TokenType::END_OF_FILE;
 
@@ -63,42 +66,61 @@ Lexer::Lexer(const std::string& src_code) {
 }
 
 Token Lexer::get_token() {
-    std::string token_value = "";
-
     while (pos < src_code.size()) {
         // Ignore whitespaces and tabs
         if (src_code[pos] == ' ' || src_code[pos] == '\t') {
             pos++;
+            column++;
+
             continue;
         }
 
         // New line character
         if (src_code[pos] == '\n') {
+            unsigned int start_line = line;
+            unsigned int start_column = column;
+
             pos++;
-            return remember_token(Token{TokenType::NEWLINE, "\n"});
+            column = 1;
+            line++;
+
+            return remember_token(Token{TokenType::NEWLINE, "\n", start_line, start_column});
         }
 
         // Semicolon character
         if (src_code[pos] == ';') {
+            unsigned int start_column = column;
+
             pos++;
-            return remember_token(Token{TokenType::SEMICOLON, ";"});
+            column++;
+
+            return remember_token(Token{TokenType::SEMICOLON, ";", line, start_column});
         }
 
         // String literal
         if (src_code[pos] == '\"' || src_code[pos] == '\'') {
-            return remember_token(read_string());
+            return remember_token(read_string(column));
         }
 
         // Number literal
         if (std::isdigit(src_code[pos])) {
-            return remember_token(read_number());
+            return remember_token(read_number(column));
         }
 
         // Identifier or keyword
         if ((src_code[pos] >= 'a' && src_code[pos] <= 'z') 
             || (src_code[pos] >= 'A' && src_code[pos] <= 'Z') 
             || src_code[pos] == '_') {
-            return remember_token(read_identifier());
+            return remember_token(read_identifier(column));
+        }
+
+        // comments
+        if (src_code[pos] == '/' && pos + 1 < src_code.size()) {
+            if (src_code[pos + 1] == '/' || src_code[pos + 1] == '*') {
+                skip_comment();
+
+                continue;
+            }
         }
 
         // Operators
@@ -110,28 +132,28 @@ Token Lexer::get_token() {
             || src_code[pos] == '-' 
             || src_code[pos] == '*' 
             || src_code[pos] == '/') {
-            return remember_token(read_operator());
+            return remember_token(read_operator(column));
         }
 
         // . and ..
         if (src_code[pos] == '.') {
             if (pos + 1 < src_code.size() && src_code[pos + 1] == '.') {
-                return remember_token(read_operator());
+                return remember_token(read_operator(column));
             }
 
-            return remember_token(read_delimiter());
+            return remember_token(read_delimiter(column));
         }
 
         // Delimiters
         if (delimiters.find(src_code[pos]) != delimiters.end()) {
-            return remember_token(read_delimiter());
+            return remember_token(read_delimiter(column));
         }
 
-        throw SyntaxError("Invalid character");
+        throw SyntaxError(line, column, "Invalid character");
     }
 
     // If no token found, return EOF
-    return remember_token(Token{TokenType::END_OF_FILE, ""});
+    return remember_token(Token{TokenType::END_OF_FILE, "", line, column});
 }
 
 Token Lexer::remember_token(Token token) {
@@ -154,7 +176,7 @@ std::vector<Token> Lexer::tokenize() {
     return tokens;
 }
 
-Token Lexer::read_identifier() {
+Token Lexer::read_identifier(unsigned int start_column) {
     std::string token_value = "";
 
     while (pos < src_code.size() && ((src_code[pos] >= 'a' && src_code[pos] <= 'z') 
@@ -163,23 +185,26 @@ Token Lexer::read_identifier() {
             || src_code[pos] == '_')) {
         token_value += src_code[pos];
         pos++;
+        column++;
     }
 
     if (keywords.find(token_value) != keywords.end())
-        return Token{keywords[token_value], token_value};
-    return Token{TokenType::IDENTIFIER, token_value};
+        return Token{keywords[token_value], token_value, line, start_column};
+
+    return Token{TokenType::IDENTIFIER, token_value, line, start_column};
 }
 
-Token Lexer::read_number() {
+Token Lexer::read_number(unsigned int start_column) {
     std::string token_value = "";
 
     if (this->previous_token_type == TokenType::DOT) {
         while (pos < src_code.size() && (std::isdigit(src_code[pos]))) {
             token_value += src_code[pos];
             pos++;
+            column++;
         }
 
-        return Token{TokenType::INT_LITERAL, token_value};
+        return Token{TokenType::INT_LITERAL, token_value, line, start_column};
 
     } else {
         bool found_dot = false;
@@ -188,10 +213,10 @@ Token Lexer::read_number() {
                 || src_code[pos] == '.')) {
             if (src_code[pos] == '.') {
                 if (found_dot) {
-                    throw SyntaxError("Invalid number!");
+                    throw SyntaxError(line, column, "Invalid number!");
                 } else {
                     if (pos + 1 < src_code.size() && src_code[pos + 1] == '.') {
-                        return Token{TokenType::INT_LITERAL, token_value};
+                        return Token{TokenType::INT_LITERAL, token_value, line, start_column};
                     }
                 }
 
@@ -200,65 +225,112 @@ Token Lexer::read_number() {
 
             token_value += src_code[pos];
             pos++;
+            column++;
         }
 
         if (found_dot) {
-            if (!std::isdigit(token_value[token_value.size() - 1])) throw SyntaxError("Invalid number!");
+            if (!std::isdigit(token_value[token_value.size() - 1]))
+                throw SyntaxError(line, column, "Invalid number!");
 
-            return Token{TokenType::REAL_LITERAL, token_value};
+            return Token{TokenType::REAL_LITERAL, token_value, line, start_column};
         }
-    return Token{TokenType::INT_LITERAL, token_value};
+
+        return Token{TokenType::INT_LITERAL, token_value, line, start_column};
     }
 }
 
-Token Lexer::read_string() {
+Token Lexer::read_string(unsigned int start_column) {
     std::string token_value = "";
     token_value += src_code[pos];
     pos++;
+    column++;
 
     while (pos < src_code.size()) {
+        if (src_code[pos] == '\n') {
+            throw SyntaxError(line, column, "Invalid string");
+        }
+
         if (src_code[pos] == token_value[0]) {
             token_value += src_code[pos];
             pos++;
+            column++;
 
-            return Token{TokenType::STRING_LITERAL, token_value};
+            return Token{TokenType::STRING_LITERAL, token_value, line, start_column};
         }
 
         token_value += src_code[pos];
         pos++;
+        column++;
     }
 
-    throw SyntaxError("Invalid string");
+    throw SyntaxError(line, column, "Invalid string");
 }
 
-Token Lexer::read_operator() {
+Token Lexer::read_operator(unsigned int start_column) {
     std::string token_value = "";
     token_value += src_code[pos];
     pos++;
+    column++;
 
     if (pos < src_code.size()) {
         token_value += src_code[pos];
         
         if (operators.find(token_value) != operators.end()) {
             pos++;
+            column++;
 
-            return Token{operators[token_value], token_value};
+            return Token{operators[token_value], token_value, line, start_column};
         }
 
         token_value.pop_back();
     }
 
     if (operators.find(token_value) != operators.end()) {
-        return Token{operators[token_value], token_value};
+        return Token{operators[token_value], token_value, line, start_column};
     }
 
-    throw SyntaxError("Invalid operator");
+    throw SyntaxError(line, column, "Invalid operator");
 }
 
-Token Lexer::read_delimiter() {
+Token Lexer::read_delimiter(unsigned int start_column) {
     char delim = src_code[pos];
     pos++;
-    return Token{delimiters[delim], std::string(1, delim)};
+    column++;
+
+    return Token{delimiters[delim], std::string(1, delim), line, start_column};
+}
+
+void Lexer::skip_comment() {
+    if (src_code[pos + 1] == '/') {
+        while (pos < src_code.size()) {
+            if (src_code[pos] == '\n') return;
+
+            pos++;
+            column++;
+        }
+    } else {
+        while (pos + 1 < src_code.size()) {
+            if (src_code[pos] == '*' && src_code[pos + 1] == '/') {
+                pos += 2;
+                column += 2;
+
+                return;
+            }
+
+            if (src_code[pos] == '\n') {
+                pos++;
+                line++;
+                column = 1;
+
+                continue;
+            }
+
+            pos++;
+            column++;
+        }
+
+        throw SyntaxError(line, column, "Invalid comment");
+    }
 }
 
 

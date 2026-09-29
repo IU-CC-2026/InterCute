@@ -38,17 +38,6 @@ int main() {
         std::string source = buffer.str();
 
 
-        // remove "Expected result: ..." from the end of file
-        size_t comment_pos = source.find("//");
-        if (comment_pos != std::string::npos) {
-            source = source.substr(0, comment_pos);
-        }
-        comment_pos = source.find("/*");
-        if (comment_pos != std::string::npos) {
-            source = source.substr(0, comment_pos);
-        }
-
-
         std::ofstream result(result_path);
         if (!result.is_open()) {
             std::cerr << "Failed to create: " << result_path << std::endl;
@@ -74,7 +63,7 @@ int main() {
                 result << ")" << std::endl;
             }
         } catch (SyntaxError& e) {
-            result << "Syntax Error" << std::endl;
+            result << e.what() << std::endl;
         }
 
         std::cout << entry.path() << " -> " << result_path << std::endl;

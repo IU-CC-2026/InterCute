@@ -1,0 +1,3 @@
+var x := 10 /* unclosed multi-line comment
+
+// Expected result: Lexer Error
