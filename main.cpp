@@ -1,4 +1,7 @@
 #include "lexer/lexer.h"
+#include "parser/adapter.h"
+#include "parser/parser.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -47,22 +50,21 @@ int main() {
 
         try {
             Lexer lexer(source);
-            std::vector<Token> tokens = lexer.tokenize();
+            set_lexer(&lexer);
 
-            for (const auto& token : tokens) {
-                result << token_type_to_string(token.type) << "(";
+            Program* root = nullptr;
+            int parse_result = yyparse(root);
 
-                if (token.type == TokenType::NEWLINE) {
-                    result << "\\n";
-                } else if (token.type == TokenType::END_OF_FILE) {
-                    result << "EOF";
-                } else {
-                    result << token.value;
-                }
-
-                result << ")" << std::endl;
+            if (parse_result == 0 && root != nullptr) {
+                std::streambuf* old_buf = std::cout.rdbuf(result.rdbuf());
+                root->print();
+                std::cout.rdbuf(old_buf);
+            } else {
+                result << "Parser Error" << std::endl;
             }
-        } catch (SyntaxError& e) {
+
+            delete root;
+        } catch (const std::exception& e) {
             result << e.what() << std::endl;
         }
 
