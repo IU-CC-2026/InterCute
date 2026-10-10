@@ -1,0 +1,5 @@
+PRINT(print)
+STRING_LITERAL("hello /* world */")
+NEWLINE(\n)
+NEWLINE(\n)
+END_OF_FILE(EOF)
