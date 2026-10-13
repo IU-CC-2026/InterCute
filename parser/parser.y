@@ -7,21 +7,11 @@
 int yylex();
 void yyerror(Program*& root, const char* s);
 
-
-// ---------------------------------------------------------------------------
-// Helper nodes.
-// Every grammar symbol carries an ASTNode* (api.value.type), but the AST
-// stores children in std::vector. These helpers glue the two together.
-// They live only in parser.cpp and never reach the final tree.
-// ---------------------------------------------------------------------------
-
-// A list of nodes under construction (statements, arguments, parameters, ...)
 struct NodeList : ASTNode {
     std::vector<ASTNode*> items;
     void print() override {}
 };
 
-// Result of `type_indicator`
 struct TypeNode : ASTNode {
     VariableType type;
     explicit TypeNode(VariableType type) : type(type) {}
@@ -44,7 +34,6 @@ static NodeList* list_add(ASTNode* list, ASTNode* node) {
     return l;
 }
 
-// Turns a NodeList into std::vector<T*> and frees the list itself
 template <class T>
 static std::vector<T*> take(ASTNode* list) {
     NodeList* l = static_cast<NodeList*>(list);
@@ -57,8 +46,6 @@ static std::vector<T*> take(ASTNode* list) {
     return result;
 }
 
-// The lexer adapter wraps every IDENTIFIER into a Reference node.
-// Here we only need its name.
 static std::string take_name(ASTNode* identifier) {
     Reference* ref = static_cast<Reference*>(identifier);
     std::string name = ref->identifier;
@@ -130,32 +117,14 @@ static UnaryExpression* unary(UnaryOperator op, ASTNode* operand) {
 %token TRUE FALSE
 %token NONE
 
-
-/* ---------------------------------------------------------------------------
- * Operator precedence (lowest to highest) and associativity.
- *
- * OPEN QUESTION (see README): the language spec puts `or`, `and`, `xor` on one
- * level, but tests/precedence/expressions.cuti expects `and` to bind tighter
- * than `or`. Currently the spec is followed. To make `and` tighter, replace the
- * first line below with:
- *     %left OR
- *     %left XOR
- *     %left AND
- * and give OR/XOR/AND different levels in bin_precedence() in ast/ast.cpp.
- * ------------------------------------------------------------------------- */
-%precedence FUNC_BODY             /* `func(..) => expr` extends as far right as possible */
+%precedence FUNC_BODY
 %left OR AND XOR
-%nonassoc LT LE GT GE EQ NEQ      /* a < b < c is a syntax error, as in the spec */
+%nonassoc LT LE GT GE EQ NEQ
 %left PLUS MINUS
 %left MUL DIV
-%precedence UNARY                 /* unary + - not */
-
+%precedence UNARY
 
 %%
-
-/* ===========================================================================
- * Program, statements, blocks                                      (Daniil)
- * ======================================================================== */
 
 program:
     body {
@@ -164,9 +133,6 @@ program:
     }
     ;
 
-/* A sequence of statements which may be empty. Statements are separated by one
- * or more newlines / semicolons, which are also allowed before the first and
- * after the last statement. Used for the program and for all blocks. */
 body:
     opt_seps {
         $$ = new_list();
@@ -234,8 +200,6 @@ variable_definition:
     }
     ;
 
-/* The left side is any reference (x, arr[1], tup.a, ...). Whether it is a valid
- * assignment target is checked in later stages, not by the parser. */
 assignment:
     reference ASSIGN expression {
         $$ = new Assignment(static_cast<Reference*>($1), expr($3));
@@ -296,11 +260,6 @@ loop_statement:
     }
     ;
 
-
-/* ===========================================================================
- * Expressions, references, calls                                    (Damir)
- * ======================================================================== */
-
 expression:
     expression OR expression    { $$ = binary($1, BinaryOperator::OR,  $3); }
     | expression AND expression { $$ = binary($1, BinaryOperator::AND, $3); }
@@ -328,7 +287,6 @@ expression:
     | literal
     ;
 
-/* x, arr[i], f(a, b), tup.name, tup.1, and any chain of those: a.b[1](2).c */
 reference:
     IDENTIFIER
     | reference OPEN_SQUARE_BRACKET expression CLOSE_SQUARE_BRACKET {
@@ -345,7 +303,6 @@ reference:
     }
     ;
 
-/* Comma separated expressions, at least one. Used by print, calls, arrays. */
 argument_list:
     expression {
         $$ = list_of($1);
@@ -383,11 +340,6 @@ literal:
     | function_literal
     ;
 
-
-/* ===========================================================================
- * Array, tuple and function literals                             (Magomed)
- * ======================================================================== */
-
 array_literal:
     OPEN_SQUARE_BRACKET opt_argument_list CLOSE_SQUARE_BRACKET {
         $$ = new Array(take<Expression>($2));
@@ -414,7 +366,6 @@ opt_tuple_element_list:
     | tuple_element_list
     ;
 
-/* `expr` or `name := expr` */
 tuple_element:
     expression {
         $$ = new TupleElement(expr($1));
@@ -424,9 +375,6 @@ tuple_element:
     }
     ;
 
-/* func(a, b) => a + b
- * func(a, b) is ... end     (a newline is allowed before `is`)
- * func is ... end           (no parameters, parentheses may be omitted) */
 function_literal:
     FUNC function_params function_body {
         $$ = new FunctionLiteral(take_names($2), static_cast<FunctionBody*>($3));
