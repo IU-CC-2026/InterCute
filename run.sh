@@ -1,5 +1,10 @@
-bison -d -o parser/parser.cpp parser/parser.y || exit 1
+#!/usr/bin/env bash
+set -e
+cd -- "$(dirname -- "$0")"
 
-g++ main.cpp lexer/lexer.cpp ast/ast.cpp parser/adapter.cpp parser/parser.cpp -o cute_compiler || exit 1
+bison -d -o parser/parser.cpp parser/parser.y
 
-./cute_compiler
+g++ -std=c++17 main.cpp lexer/lexer.cpp ast/ast.cpp ast/ast_dump.cpp \
+    parser/adapter.cpp parser/parser.cpp -o cute_compiler
+
+./cute_compiler "$@"
