@@ -1,0 +1,10 @@
+var e := []
+var tup := {}
+
+print 1
+print [[], {}, [1, [2]]]
+
+/* Expected result:
+1
+[[], {}, [1, [2]]]
+*/

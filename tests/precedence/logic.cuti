@@ -1,0 +1,11 @@
+print 1 < 2 and 2 < 3
+print not (1 > 2)
+print true xor false
+print not true and false
+
+/* Expected result:
+true
+true
+true
+false
+*/

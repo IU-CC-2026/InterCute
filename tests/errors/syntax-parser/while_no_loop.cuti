@@ -1,0 +1,7 @@
+var i := 0
+
+while i < 3
+    print i
+end
+
+// Expected result: Syntax Error

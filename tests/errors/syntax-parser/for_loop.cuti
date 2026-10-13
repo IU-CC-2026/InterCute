@@ -1,0 +1,5 @@
+for loop
+    print 1
+end
+
+// Expected result: Syntax Error

@@ -1,4 +1,4 @@
-for loop
+loop
     print "stop"
     exit
 end

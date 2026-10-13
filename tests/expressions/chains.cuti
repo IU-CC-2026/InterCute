@@ -1,0 +1,15 @@
+var f := func(x) => func(y) => x + y
+var arr := [[1, 2], [3, 4]]
+var t := {a := {b := [10, 20]}}
+
+print f(1)(2)
+print arr[2][1]
+print t.a.b[2]
+print f(arr[1][2])(t.a.b[1])
+
+/* Expected result:
+3
+3
+20
+12
+*/
