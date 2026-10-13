@@ -1,0 +1,6 @@
+Program
+  InfiniteLoop
+    Body
+      Print
+        StringLiteral ("Hello World!")
+      Exit

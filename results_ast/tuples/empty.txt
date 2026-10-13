@@ -1,0 +1,11 @@
+Program
+  Declaration
+    VariableDefinition (tup)
+      Initializer
+        Tuple (empty)
+  ForEachLoop (x)
+    Collection
+      Reference (tup)
+    Body
+      Print
+        Reference (x)

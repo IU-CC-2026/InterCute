@@ -1,0 +1,13 @@
+Program
+  Declaration
+    VariableDefinition (x)
+      Initializer
+        IntLiteral (1)
+  Assignment
+    Target
+      Reference (x)
+    Value
+      NoneLiteral
+  Print
+    Is (none)
+      Reference (x)

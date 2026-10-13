@@ -1,0 +1,24 @@
+Program
+  Declaration
+    VariableDefinition (tup)
+      Initializer
+        Tuple
+          TupleElement (a)
+            IntLiteral (10)
+          TupleElement (unnamed)
+            RealLiteral (2.5)
+          TupleElement (c)
+            StringLiteral ('3')
+  ForEachLoop (x)
+    Collection
+      Reference (tup)
+    Body
+      Print
+        Reference (x)
+  Print
+    Reference (tup)
+      MemberSuffix (a)
+  Print
+    Reference (tup)
+      TupleIndexSuffix
+        IntLiteral (2)

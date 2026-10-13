@@ -1,0 +1,9 @@
+Program
+  ForRangeLoop (i)
+    From
+      IntLiteral (1)
+    To
+      IntLiteral (5)
+    Body
+      Print
+        Reference (i)

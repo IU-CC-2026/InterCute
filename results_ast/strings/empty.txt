@@ -1,0 +1,7 @@
+Program
+  Declaration
+    VariableDefinition (s)
+      Initializer
+        StringLiteral ("")
+  Print
+    Reference (s)

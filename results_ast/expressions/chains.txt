@@ -1,0 +1,71 @@
+Program
+  Declaration
+    VariableDefinition (f)
+      Initializer
+        FunctionLiteral
+          Parameters
+            x
+          ShortFunctionBody
+            FunctionLiteral
+              Parameters
+                y
+              ShortFunctionBody
+                BinaryExpression (+)
+                  Reference (x)
+                  Reference (y)
+  Declaration
+    VariableDefinition (arr)
+      Initializer
+        Array
+          Array
+            IntLiteral (1)
+            IntLiteral (2)
+          Array
+            IntLiteral (3)
+            IntLiteral (4)
+  Declaration
+    VariableDefinition (t)
+      Initializer
+        Tuple
+          TupleElement (a)
+            Tuple
+              TupleElement (b)
+                Array
+                  IntLiteral (10)
+                  IntLiteral (20)
+  Print
+    Reference (f)
+      CallSuffix
+        Arguments
+          IntLiteral (1)
+      CallSuffix
+        Arguments
+          IntLiteral (2)
+  Print
+    Reference (arr)
+      ArrayIndexSuffix
+        IntLiteral (2)
+      ArrayIndexSuffix
+        IntLiteral (1)
+  Print
+    Reference (t)
+      MemberSuffix (a)
+      MemberSuffix (b)
+      ArrayIndexSuffix
+        IntLiteral (2)
+  Print
+    Reference (f)
+      CallSuffix
+        Arguments
+          Reference (arr)
+            ArrayIndexSuffix
+              IntLiteral (1)
+            ArrayIndexSuffix
+              IntLiteral (2)
+      CallSuffix
+        Arguments
+          Reference (t)
+            MemberSuffix (a)
+            MemberSuffix (b)
+            ArrayIndexSuffix
+              IntLiteral (1)

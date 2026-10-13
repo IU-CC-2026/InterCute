@@ -1,0 +1,37 @@
+Program
+  Declaration
+    VariableDefinition (tup)
+      Initializer
+        Tuple
+          TupleElement (unnamed)
+            IntLiteral (2)
+          TupleElement (a)
+            Tuple
+              TupleElement (c)
+                Tuple
+                  TupleElement (b)
+                    Tuple
+                      TupleElement (d)
+                        Tuple
+                          TupleElement (unnamed)
+                            IntLiteral (2)
+                          TupleElement (unnamed)
+                            IntLiteral (8)
+                      TupleElement (unnamed)
+                        IntLiteral (28)
+                  TupleElement (b)
+                    IntLiteral (6)
+              TupleElement (unnamed)
+                IntLiteral (3)
+          TupleElement (unnamed)
+            IntLiteral (10)
+  Print
+    Reference (tup)
+      MemberSuffix (a)
+      TupleIndexSuffix
+        IntLiteral (1)
+      MemberSuffix (b)
+      TupleIndexSuffix
+        IntLiteral (1)
+      TupleIndexSuffix
+        IntLiteral (2)

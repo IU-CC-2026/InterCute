@@ -1,0 +1,20 @@
+Program
+  Declaration
+    VariableDefinition (i)
+      Initializer
+        IntLiteral (1)
+  WhileLoop
+    Condition
+      BinaryExpression (<=)
+        Reference (i)
+        IntLiteral (5)
+    Body
+      Print
+        Reference (i)
+      Assignment
+        Target
+          Reference (i)
+        Value
+          BinaryExpression (+)
+            Reference (i)
+            IntLiteral (1)

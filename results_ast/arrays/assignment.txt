@@ -1,0 +1,23 @@
+Program
+  Declaration
+    VariableDefinition (arr)
+      Initializer
+        Array
+          IntLiteral (5)
+          IntLiteral (10)
+          IntLiteral (20)
+  Print
+    Reference (arr)
+      ArrayIndexSuffix
+        IntLiteral (2)
+  Assignment
+    Target
+      Reference (arr)
+        ArrayIndexSuffix
+          IntLiteral (2)
+    Value
+      IntLiteral (40)
+  Print
+    Reference (arr)
+      ArrayIndexSuffix
+        IntLiteral (2)

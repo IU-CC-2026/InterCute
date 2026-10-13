@@ -1,0 +1,3 @@
+Program
+  Print
+    StringLiteral ("hello /* world */")

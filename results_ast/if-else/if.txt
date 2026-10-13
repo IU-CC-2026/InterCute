@@ -1,0 +1,21 @@
+Program
+  Declaration
+    VariableDefinition (x)
+      Initializer
+        UnaryExpression (-)
+          IntLiteral (4)
+  Declaration
+    VariableDefinition (y)
+      Initializer
+        IntLiteral (3)
+  If
+    Condition
+      BinaryExpression (>)
+        Reference (x)
+        Reference (y)
+    Then
+      Print
+        Reference (x)
+    Else
+      Print
+        Reference (y)
