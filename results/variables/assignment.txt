@@ -1,1 +1,4 @@
-Parser Error
+var x := 10
+print x
+x := 30
+print x

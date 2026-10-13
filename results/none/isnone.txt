@@ -1,1 +1,2 @@
-Parser Error
+var x
+print x is none

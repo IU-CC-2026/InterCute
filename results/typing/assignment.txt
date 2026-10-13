@@ -1,1 +1,4 @@
-Parser Error
+var x := 10
+print x + 5
+x := "hello"
+print x + " world"

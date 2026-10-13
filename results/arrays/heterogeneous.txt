@@ -1,1 +1,4 @@
-Parser Error
+var arr := ["a", 'b', 10, "hello", 1.5, true]
+for x in arr loop
+print x
+end

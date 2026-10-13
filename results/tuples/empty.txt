@@ -1,1 +1,4 @@
-Parser Error
+var tup := {}
+for x in tup loop
+print x
+end

@@ -1,1 +1,6 @@
-Parser Error
+var arr1 := [1, "a", 2]
+var arr2 := ["cat", "wolf", true, 28]
+var merged := arr1 + arr2
+for x in merged loop
+print x
+end

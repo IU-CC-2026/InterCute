@@ -1,1 +1,4 @@
-Parser Error
+loop
+print "stop"
+exit
+end

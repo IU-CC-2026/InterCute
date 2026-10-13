@@ -1,1 +1,5 @@
-Parser Error
+var a := 10
+var b := 3
+var c := 2
+if a + b > b * c =>
+print a

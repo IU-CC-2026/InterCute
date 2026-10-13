@@ -1,1 +1,1 @@
-Parser Error
+print 10 and true

@@ -158,7 +158,7 @@ void RealLiteral::print() {
 StringLiteral::StringLiteral(std::string value) : value(value) {}
 
 void StringLiteral::print() {
-    std::cout << "\"" << value << "\"";
+    std::cout << value;
 }
 
 
