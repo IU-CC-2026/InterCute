@@ -1,0 +1,26 @@
+Program
+  Declaration
+    VariableDefinition (max)
+      Initializer
+        FunctionLiteral
+          Parameters
+            a
+            b
+          BlockBody
+            If
+              Condition
+                BinaryExpression (>)
+                  Reference (a)
+                  Reference (b)
+              Then
+                Return
+                  Reference (a)
+              Else
+                Return
+                  Reference (b)
+  Print
+    Reference (max)
+      CallSuffix
+        Arguments
+          IntLiteral (10)
+          IntLiteral (20)

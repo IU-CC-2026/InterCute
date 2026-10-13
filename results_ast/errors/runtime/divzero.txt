@@ -1,0 +1,5 @@
+Program
+  Print
+    BinaryExpression (/)
+      IntLiteral (5)
+      IntLiteral (0)

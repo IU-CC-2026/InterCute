@@ -1,0 +1,7 @@
+Program
+  Declaration
+    VariableDefinition (x)
+      Initializer (absent)
+  Print
+    Is (none)
+      Reference (x)

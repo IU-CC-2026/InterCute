@@ -1,0 +1,43 @@
+Program
+  Print
+    BinaryExpression (-)
+      BinaryExpression (-)
+        IntLiteral (10)
+        IntLiteral (3)
+      IntLiteral (2)
+  Print
+    BinaryExpression (/)
+      BinaryExpression (/)
+        IntLiteral (100)
+        IntLiteral (10)
+      IntLiteral (5)
+  Print
+    BinaryExpression (+)
+      IntLiteral (2)
+      BinaryExpression (*)
+        IntLiteral (3)
+        IntLiteral (4)
+  Print
+    BinaryExpression (*)
+      BinaryExpression (+)
+        IntLiteral (2)
+        IntLiteral (3)
+      IntLiteral (4)
+  Print
+    BinaryExpression (+)
+      BinaryExpression (*)
+        IntLiteral (2)
+        IntLiteral (3)
+      BinaryExpression (*)
+        IntLiteral (4)
+        IntLiteral (5)
+  Print
+    BinaryExpression (*)
+      UnaryExpression (-)
+        IntLiteral (2)
+      IntLiteral (3)
+  Print
+    UnaryExpression (-)
+      BinaryExpression (+)
+        IntLiteral (2)
+        IntLiteral (3)

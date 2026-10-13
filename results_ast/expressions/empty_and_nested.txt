@@ -1,0 +1,19 @@
+Program
+  Declaration
+    VariableDefinition (e)
+      Initializer
+        Array (empty)
+  Declaration
+    VariableDefinition (tup)
+      Initializer
+        Tuple (empty)
+  Print
+    IntLiteral (1)
+  Print
+    Array
+      Array (empty)
+      Tuple (empty)
+      Array
+        IntLiteral (1)
+        Array
+          IntLiteral (2)

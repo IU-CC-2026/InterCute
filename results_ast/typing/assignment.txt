@@ -1,0 +1,18 @@
+Program
+  Declaration
+    VariableDefinition (x)
+      Initializer
+        IntLiteral (10)
+  Print
+    BinaryExpression (+)
+      Reference (x)
+      IntLiteral (5)
+  Assignment
+    Target
+      Reference (x)
+    Value
+      StringLiteral ("hello")
+  Print
+    BinaryExpression (+)
+      Reference (x)
+      StringLiteral (" world")

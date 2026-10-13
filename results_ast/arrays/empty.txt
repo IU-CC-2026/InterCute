@@ -1,0 +1,11 @@
+Program
+  Declaration
+    VariableDefinition (arr)
+      Initializer
+        Array (empty)
+  ForEachLoop (x)
+    Collection
+      Reference (arr)
+    Body
+      Print
+        Reference (x)

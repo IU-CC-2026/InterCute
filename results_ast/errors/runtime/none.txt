@@ -1,0 +1,8 @@
+Program
+  Declaration
+    VariableDefinition (x)
+      Initializer (absent)
+  Print
+    BinaryExpression (+)
+      Reference (x)
+      IntLiteral (10)

@@ -1,0 +1,40 @@
+Program
+  Declaration
+    VariableDefinition (x)
+      Initializer
+        RealLiteral (1.5)
+  Print
+    Is (real)
+      Reference (x)
+  Assignment
+    Target
+      Reference (x)
+    Value
+      IntLiteral (3)
+  Print
+    Is (int)
+      Reference (x)
+  Assignment
+    Target
+      Reference (x)
+    Value
+      BoolLiteral (false)
+  Print
+    Is (bool)
+      Reference (x)
+  Assignment
+    Target
+      Reference (x)
+    Value
+      StringLiteral ('hi')
+  Print
+    Is (string)
+      Reference (x)
+  Assignment
+    Target
+      Reference (x)
+    Value
+      NoneLiteral
+  Print
+    Is (none)
+      Reference (x)
