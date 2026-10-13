@@ -1,0 +1,5 @@
+var f := func(a)
+
+print 1
+
+// Expected result: Syntax Error

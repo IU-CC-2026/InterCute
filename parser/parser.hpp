@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 8 "parser/parser.y"
+#line 85 "parser/parser.y"
 
     #include "../ast/ast.h"
 
@@ -111,7 +111,9 @@ extern int yydebug;
     STRING_LITERAL = 306,          /* STRING_LITERAL  */
     TRUE = 307,                    /* TRUE  */
     FALSE = 308,                   /* FALSE  */
-    NONE = 309                     /* NONE  */
+    NONE = 309,                    /* NONE  */
+    FUNC_BODY = 310,               /* FUNC_BODY  */
+    UNARY = 311                    /* UNARY  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

@@ -1,1 +1,4 @@
-Parser Error
+var arr := [5, 10, 20]
+print arr[2]
+arr[2] := 40
+print arr[2]

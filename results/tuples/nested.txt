@@ -1,1 +1,2 @@
-Parser Error
+var tup := {{1, {2}}, "hi"}
+print tup.1.2.1

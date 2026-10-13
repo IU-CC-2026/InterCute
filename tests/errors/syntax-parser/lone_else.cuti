@@ -1,0 +1,5 @@
+else
+    print 1
+end
+
+// Expected result: Syntax Error

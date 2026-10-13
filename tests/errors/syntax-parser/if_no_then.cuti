@@ -1,0 +1,7 @@
+var x := 2
+
+if x > 1
+    print x
+end
+
+// Expected result: Syntax Error
