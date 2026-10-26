@@ -1,11 +1,72 @@
-var make_tup := func(num, count) is
-result_tup := {}
-for i in 1..count loop
-result_tup := result_tup + {num}
-end
-return result_tup
-end
-var tup := make_tup(3, 5)
-for x in tup loop
-print x
-end
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: make_tup
+					expression:
+						FunctionLiteral
+							arguments:
+								num
+								count
+							body:
+								BlockBody
+									statements:
+										Assignment
+											reference:
+												Reference
+													identifier: result_tup
+											expression:
+												Tuple
+													items: []
+										ForRangeLoop
+											identifier: i
+											first_expr:
+												IntLiteral: 1
+											second_expr:
+												Reference
+													identifier: count
+											body:
+												Assignment
+													reference:
+														Reference
+															identifier: result_tup
+													expression:
+														BinaryExpression
+															operator: +
+															left:
+																Reference
+																	identifier: result_tup
+															right:
+																Tuple
+																	items:
+																		TupleElement
+																			expression:
+																				Reference
+																					identifier: num
+										Return
+											result:
+												Reference
+													identifier: result_tup
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup
+					expression:
+						Reference
+							identifier: make_tup
+							suffixes:
+								CallSuffix
+									arguments:
+										IntLiteral: 3
+										IntLiteral: 5
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: tup
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

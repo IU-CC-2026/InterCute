@@ -1,4 +1,22 @@
-var x := 10
-print x
-x := 30
-print x
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						IntLiteral: 10
+		Print
+			expressions:
+				Reference
+					identifier: x
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				IntLiteral: 30
+		Print
+			expressions:
+				Reference
+					identifier: x

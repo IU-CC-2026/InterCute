@@ -1,1 +1,5 @@
-print "hello /* world */"
+Program
+	statements:
+		Print
+			expressions:
+				StringLiteral: "hello /* world */"

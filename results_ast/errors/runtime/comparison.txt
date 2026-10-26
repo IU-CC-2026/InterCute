@@ -1,5 +1,0 @@
-Program
-  Print
-    BinaryExpression (>)
-      StringLiteral ("a")
-      IntLiteral (5)

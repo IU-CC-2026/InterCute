@@ -10,7 +10,7 @@
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
-    virtual void print() = 0;
+    virtual std::string print(int level = 0) = 0;
 };
 
 
@@ -38,14 +38,7 @@ enum class UnaryOperator {
 std::string unaryOperatorToString(UnaryOperator op);
 
 
-int bin_precedence(BinaryOperator op);
-int unary_precedence(UnaryOperator op);
-
-
-class Expression : public ASTNode {
-public:
-    virtual void printWithParentPrecedence(int parent_precedence = 0, bool is_right_child = false);
-};
+class Expression : public ASTNode {};
 
 class Statement : public ASTNode {};
 
@@ -59,9 +52,7 @@ public:
 
     BinaryExpression(Expression* left, Expression* right, BinaryOperator op);
 
-    void print() override;
-
-    void printWithParentPrecedence(int parent_precedence = 0, bool is_right_child = false) override;
+    std::string print(int level) override;
 };
 
 class UnaryExpression : public Expression {
@@ -71,9 +62,7 @@ public:
 
     UnaryExpression(Expression* expr, UnaryOperator op);
 
-    void print() override;
-
-    void printWithParentPrecedence(int parent_precedence = 0, bool is_right_child = false) override;
+    std::string print(int level) override;
 };
 
 class Literal : public Expression {};
@@ -84,7 +73,7 @@ public:
 
     IntLiteral(int value);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class RealLiteral : public Literal {
@@ -93,7 +82,7 @@ public:
 
     RealLiteral(double value);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class StringLiteral : public Literal {
@@ -102,7 +91,7 @@ public:
 
     StringLiteral(std::string value);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class BoolLiteral : public Literal {
@@ -111,14 +100,14 @@ public:
 
     BoolLiteral(bool value);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class NoneLiteral : public Literal {
 public:
     NoneLiteral() = default;
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class FunctionBody : public ASTNode {};
@@ -129,7 +118,7 @@ public:
 
     BlockBody(std::vector<Statement*> statements);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class ShortFunctionBody : public FunctionBody {
@@ -138,7 +127,7 @@ public:
 
     ShortFunctionBody(Expression* expr);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class FunctionLiteral : public Literal {
@@ -148,7 +137,7 @@ public:
 
     FunctionLiteral(std::vector<std::string> args, FunctionBody* body);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Array : public Literal {
@@ -157,7 +146,7 @@ public:
 
     Array(std::vector<Expression*> items);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class TupleElement : public ASTNode {
@@ -167,7 +156,7 @@ public:
 
     TupleElement(Expression* expr, std::optional<std::string> identifier = std::nullopt);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Tuple : public Literal {
@@ -176,7 +165,7 @@ public:
 
     Tuple(std::vector<TupleElement*> items);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class ReferenceSuffix : public ASTNode {};
@@ -187,7 +176,7 @@ public:
 
     ArrayIndexSuffix(Expression* index);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class CallSuffix : public ReferenceSuffix {
@@ -196,7 +185,7 @@ public:
 
     CallSuffix(std::vector<Expression*> args = {});
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class MemberSuffix : public ReferenceSuffix {
@@ -205,7 +194,7 @@ public:
 
     MemberSuffix(std::string identifier);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class TupleIndexSuffix : public ReferenceSuffix {
@@ -214,7 +203,7 @@ public:
 
     TupleIndexSuffix(IntLiteral* index);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Reference : public Expression {
@@ -224,7 +213,7 @@ public:
 
     Reference(std::string identifier, std::vector<ReferenceSuffix*> suffixes = {});
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class VariableDefinition : public ASTNode {
@@ -234,7 +223,7 @@ public:
 
     VariableDefinition(std::string identifier, Expression* expr = nullptr);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Declaration : public Statement {
@@ -243,7 +232,7 @@ public:
 
     Declaration(std::vector<VariableDefinition*> definitions);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Is : public Expression {
@@ -253,7 +242,7 @@ public:
 
     Is(Reference* ref, VariableType type);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 
@@ -265,7 +254,7 @@ public:
 
     Program(std::vector<Statement*> statements);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class If : public Statement {
@@ -276,7 +265,7 @@ public:
 
     If(Expression* condition, std::vector<Statement*> then_statements, std::optional<std::vector<Statement*>> else_statements = std::nullopt);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class IfShort : public Statement {
@@ -286,7 +275,7 @@ public:
 
     IfShort(Expression* condition, std::vector<Statement*> statements);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Loop : public Statement {
@@ -302,7 +291,7 @@ public:
 
     WhileLoop(Expression* condition, std::vector<Statement*> statements);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class ForEachLoop : public Loop {
@@ -312,7 +301,7 @@ public:
 
     ForEachLoop(Expression* expr, std::vector<Statement*> statements, std::optional<std::string> identifier = std::nullopt);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class ForRangeLoop : public Loop {
@@ -323,21 +312,21 @@ public:
 
     ForRangeLoop(Expression* first_expr, Expression* second_expr, std::vector<Statement*> statements, std::optional<std::string> identifier = std::nullopt);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class InfiniteLoop : public Loop {
 public:
     InfiniteLoop(std::vector<Statement*> statements);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Exit : public Statement {
 public:
     Exit() = default;
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Return : public Statement {
@@ -346,7 +335,7 @@ public:
 
     Return(Expression* result = nullptr);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Print : public Statement {
@@ -355,7 +344,7 @@ public:
 
     Print(std::vector<Expression*> exprs);
 
-    void print() override;
+    std::string print(int level) override;
 };
 
 class Assignment : public Statement {
@@ -365,5 +354,5 @@ public:
 
     Assignment(Reference* ref, Expression* expr);
 
-    void print() override;
+    std::string print(int level) override;
 };

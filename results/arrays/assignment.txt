@@ -1,4 +1,38 @@
-var arr := [5, 10, 20]
-print arr[2]
-arr[2] := 40
-print arr[2]
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								IntLiteral: 5
+								IntLiteral: 10
+								IntLiteral: 20
+		Print
+			expressions:
+				Reference
+					identifier: arr
+					suffixes:
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 2
+		Assignment
+			reference:
+				Reference
+					identifier: arr
+					suffixes:
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 2
+			expression:
+				IntLiteral: 40
+		Print
+			expressions:
+				Reference
+					identifier: arr
+					suffixes:
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 2

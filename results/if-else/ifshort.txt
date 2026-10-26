@@ -1,5 +1,47 @@
-var a := 10
-var b := 3
-var c := 2
-if a + b > b * c =>
-print a
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: a
+					expression:
+						IntLiteral: 10
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: b
+					expression:
+						IntLiteral: 3
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: c
+					expression:
+						IntLiteral: 2
+		IfShort
+			condition:
+				BinaryExpression
+					operator: >
+					left:
+						BinaryExpression
+							operator: +
+							left:
+								Reference
+									identifier: a
+							right:
+								Reference
+									identifier: b
+					right:
+						BinaryExpression
+							operator: *
+							left:
+								Reference
+									identifier: b
+							right:
+								Reference
+									identifier: c
+			statements:
+				Print
+					expressions:
+						Reference
+							identifier: a

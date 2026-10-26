@@ -1,7 +1,0 @@
-Program
-  Declaration
-    VariableDefinition (s)
-      Initializer
-        StringLiteral ("hello")
-  Print
-    Reference (s)

@@ -1,4 +1,36 @@
-var s1 := 'good'
-var s2 := "job"
-var merged := s1 + " " + s2
-print merged
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: s1
+					expression:
+						StringLiteral: 'good'
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: s2
+					expression:
+						StringLiteral: "job"
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: merged
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								BinaryExpression
+									operator: +
+									left:
+										Reference
+											identifier: s1
+									right:
+										StringLiteral: " "
+							right:
+								Reference
+									identifier: s2
+		Print
+			expressions:
+				Reference
+					identifier: merged

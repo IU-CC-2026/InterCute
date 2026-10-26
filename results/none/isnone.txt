@@ -1,2 +1,13 @@
-var x
-print x is none
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: none

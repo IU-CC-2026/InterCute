@@ -1,2 +1,69 @@
-var tup := {2, a := {c := {b := {d := {2, 8}, 28}, b := 6}, 3}, 10}
-print tup.a.1.b.1.2
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup
+					expression:
+						Tuple
+							items:
+								TupleElement
+									expression:
+										IntLiteral: 2
+								TupleElement
+									identifier: a
+									expression:
+										Tuple
+											items:
+												TupleElement
+													identifier: c
+													expression:
+														Tuple
+															items:
+																TupleElement
+																	identifier: b
+																	expression:
+																		Tuple
+																			items:
+																				TupleElement
+																					identifier: d
+																					expression:
+																						Tuple
+																							items:
+																								TupleElement
+																									expression:
+																										IntLiteral: 2
+																								TupleElement
+																									expression:
+																										IntLiteral: 8
+																				TupleElement
+																					expression:
+																						IntLiteral: 28
+																TupleElement
+																	identifier: b
+																	expression:
+																		IntLiteral: 6
+												TupleElement
+													expression:
+														IntLiteral: 3
+								TupleElement
+									expression:
+										IntLiteral: 10
+		Print
+			expressions:
+				Reference
+					identifier: tup
+					suffixes:
+						MemberSuffix
+							identifier: a
+						TupleIndexSuffix
+							index:
+								IntLiteral: 1
+						MemberSuffix
+							identifier: b
+						TupleIndexSuffix
+							index:
+								IntLiteral: 1
+						TupleIndexSuffix
+							index:
+								IntLiteral: 2

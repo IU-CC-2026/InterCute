@@ -1,5 +1,34 @@
-var i := 1
-while i <= 5 loop
-print i
-i := i + 1
-end
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: i
+					expression:
+						IntLiteral: 1
+		WhileLoop
+			condition:
+				BinaryExpression
+					operator: <=
+					left:
+						Reference
+							identifier: i
+					right:
+						IntLiteral: 5
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: i
+				Assignment
+					reference:
+						Reference
+							identifier: i
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								Reference
+									identifier: i
+							right:
+								IntLiteral: 1

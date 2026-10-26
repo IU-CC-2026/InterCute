@@ -1,3 +1,13 @@
-for i in 1..5 loop
-print i
-end
+Program
+	statements:
+		ForRangeLoop
+			identifier: i
+			first_expr:
+				IntLiteral: 1
+			second_expr:
+				IntLiteral: 5
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: i

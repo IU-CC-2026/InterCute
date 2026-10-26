@@ -79,13 +79,13 @@ void yyerror(Program*& root, const char* s);
 
 struct NodeList : ASTNode {
     std::vector<ASTNode*> items;
-    void print() override {}
+    std::string print(int level) override { return ""; }
 };
 
 struct TypeNode : ASTNode {
     VariableType type;
     explicit TypeNode(VariableType type) : type(type) {}
-    void print() override {}
+    std::string print(int level) override { return ""; }
 };
 
 static NodeList* new_list() {

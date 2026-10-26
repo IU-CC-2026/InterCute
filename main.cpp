@@ -1,102 +1,73 @@
 #include "lexer/lexer.h"
 #include "parser/adapter.h"
 #include "parser/parser.hpp"
-#include "ast/ast_dump.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <memory>
+#include <fstream>
 #include <sstream>
-#include <string>
+#include <filesystem>
+
 
 namespace fs = std::filesystem;
 
-class OutputRedirect {
-    std::streambuf* previous;
-public:
-    explicit OutputRedirect(std::ostream& out) : previous(std::cout.rdbuf(out.rdbuf())) {}
-    ~OutputRedirect() { std::cout.rdbuf(previous); }
-};
 
-bool parse_file(const fs::path& path, std::ostream& out, bool ast_mode) {
-    std::ifstream file(path);
-    if (!file) {
-        out << "Failed to open: " << path << '\n';
-        return false;
-    }
+int main() {
+    fs::path tests_dir = "tests";
+    fs::path results_dir = "results";
 
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-
-    try {
-        Lexer lexer(buffer.str());
-        set_lexer(&lexer);
-
-        Program* root = nullptr;
-        const int status = yyparse(root);
-        
-        std::unique_ptr<Program> program(root);
-        if (status != 0 || !program) {
-            out << "Parser Error\n";
-            return false;
+    // recursively iterate through all subdirectories and files
+    for (const auto& entry : fs::recursive_directory_iterator(tests_dir)) {
+        if (!entry.is_regular_file() || entry.path().extension() != ".cuti") {
+            continue;
         }
 
-        if (ast_mode) dump_ast(program.get(), out);
-        else {
-            OutputRedirect redirect(out);
-            program->print();
+
+        // construct path for file with test results
+        fs::path relative_path = fs::relative(entry.path(), tests_dir);
+        fs::path result_path = results_dir / relative_path;
+        result_path.replace_extension(".txt");
+        fs::create_directories(result_path.parent_path());
+
+
+        std::ifstream file(entry.path());
+        if (!file.is_open()) {
+            std::cerr << "Failed to open: " << entry.path() << std::endl;
+            continue;
         }
 
-        return true;
-    } catch (const std::exception& e) {
-        out << e.what() << '\n';
-        return false;
-    }
-}
 
-int main(int argc, char* argv[]) {
-    bool ast_mode = false;
-    fs::path input;
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string source = buffer.str();
 
-    for (int i = 1; i < argc; ++i) {
-        const std::string arg = argv[i];
-        if (arg == "--ast") ast_mode = true;
-        else if (arg == "--help") {
-            std::cout << "Usage: " << argv[0] << " [--ast] [file.cuti]\n"
-                      << "Without a file: process tests/ into results/ or results_ast/.\n";
-            return 0;
 
-        } else if (arg.rfind("--", 0) == 0 || !input.empty()) {
-            std::cerr << "Invalid arguments. Use --help.\n";
-            return 2;
+        std::ofstream result(result_path);
+        if (!result.is_open()) {
+            std::cerr << "Failed to create: " << result_path << std::endl;
+            continue;
+        }
 
-        } else input = arg;
-    }
 
-    if (!input.empty()) return parse_file(input, std::cout, ast_mode) ? 0 : 1;
+        try {
+            Lexer lexer(source);
+            set_lexer(&lexer);
 
-    const fs::path tests_dir = "tests";
-    const fs::path results_dir = ast_mode ? "results_ast" : "results";
-    
-    try {
-        for (const auto& entry : fs::recursive_directory_iterator(tests_dir)) {
-            if (!entry.is_regular_file() || entry.path().extension() != ".cuti") continue;
-            fs::path result_path = results_dir / fs::relative(entry.path(), tests_dir);
-            result_path.replace_extension(".txt");
-            fs::create_directories(result_path.parent_path());
-            std::ofstream result(result_path);
-            if (!result) {
-                std::cerr << "Failed to create: " << result_path << '\n';
-                return 1;
+            Program* root = nullptr;
+            int parse_result = yyparse(root);
+
+            if (parse_result == 0 && root != nullptr) {
+                result << root->print(0) << '\n';
+            } else {
+                result << "Parser Error" << std::endl;
             }
-            
-            parse_file(entry.path(), result, ast_mode);
-            std::cout << entry.path() << " -> " << result_path << '\n';
+
+            delete root;
+        } catch (const std::exception& e) {
+            result << e.what() << std::endl;
         }
-    } catch (const fs::filesystem_error& e) {
-        std::cerr << e.what() << '\n';
-        return 1;
+
+        std::cout << entry.path() << " -> " << result_path << std::endl;
     }
+
     return 0;
 }

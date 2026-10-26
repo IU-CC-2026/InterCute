@@ -1,4 +1,8 @@
-loop
-print "stop"
-exit
-end
+Program
+	statements:
+		InfiniteLoop
+			body:
+				Print
+					expressions:
+						StringLiteral: "stop"
+				Exit

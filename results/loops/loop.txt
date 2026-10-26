@@ -1,4 +1,8 @@
-loop
-print "Hello World!"
-exit
-end
+Program
+	statements:
+		InfiniteLoop
+			body:
+				Print
+					expressions:
+						StringLiteral: "Hello World!"
+				Exit

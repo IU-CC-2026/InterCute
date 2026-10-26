@@ -3,22 +3,8 @@ InterCute (Interpreter for Cution PL) interpretes and runs programs written in C
 
 ## Build and run
 
-Build the project and print the AST for one file:
+Build the project and print the AST for all programs in `tests`:
 
 ```bash
-bash run.sh --ast tests/functions/oneliner.cuti
+bash run.sh
 ```
-
-After building:
-
-```bash
-./cute_compiler --ast tests/loops/for.cuti
-```
-
-Run all examples from `tests/` and save their ASTs to `results_ast/`:
-
-```bash
-./cute_compiler --ast
-```
-
-Without `--ast`, the program prints source-like output.

@@ -1,4 +1,32 @@
-var x := 10
-print x + 5
-x := "hello"
-print x + " world"
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						IntLiteral: 10
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						Reference
+							identifier: x
+					right:
+						IntLiteral: 5
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				StringLiteral: "hello"
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						Reference
+							identifier: x
+					right:
+						StringLiteral: " world"
