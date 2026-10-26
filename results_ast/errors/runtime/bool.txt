@@ -1,5 +1,0 @@
-Program
-  Print
-    BinaryExpression (and)
-      IntLiteral (10)
-      BoolLiteral (true)

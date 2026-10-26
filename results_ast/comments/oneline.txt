@@ -1,7 +1,0 @@
-Program
-  Declaration
-    VariableDefinition (x)
-      Initializer
-        IntLiteral (10)
-  Print
-    Reference (x)

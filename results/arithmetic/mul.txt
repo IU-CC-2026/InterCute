@@ -1,4 +1,31 @@
-var a := 20
-var b := 10
-var c := a * b
-print c
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: a
+					expression:
+						IntLiteral: 20
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: b
+					expression:
+						IntLiteral: 10
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: c
+					expression:
+						BinaryExpression
+							operator: *
+							left:
+								Reference
+									identifier: a
+							right:
+								Reference
+									identifier: b
+		Print
+			expressions:
+				Reference
+					identifier: c

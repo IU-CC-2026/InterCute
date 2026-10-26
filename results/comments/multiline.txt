@@ -1,2 +1,17 @@
-var x := 10 + 5
-print x
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								IntLiteral: 10
+							right:
+								IntLiteral: 5
+		Print
+			expressions:
+				Reference
+					identifier: x

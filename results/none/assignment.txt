@@ -1,3 +1,21 @@
-var x := 1
-x := none
-print x is none
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						IntLiteral: 1
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				NoneLiteral: none
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: none

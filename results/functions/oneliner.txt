@@ -1,2 +1,30 @@
-var add := func(a, b) => a + b
-print add(2, 3)
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: add
+					expression:
+						FunctionLiteral
+							arguments:
+								a
+								b
+							body:
+								ShortFunctionBody
+									BinaryExpression
+										operator: +
+										left:
+											Reference
+												identifier: a
+										right:
+											Reference
+												identifier: b
+		Print
+			expressions:
+				Reference
+					identifier: add
+					suffixes:
+						CallSuffix
+							arguments:
+								IntLiteral: 2
+								IntLiteral: 3

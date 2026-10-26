@@ -1,10 +1,150 @@
-print 2 + 2 * 2
-print (2 + 2) * 2
-print 3 - 5 / 5
-print (3 - 5) / 5
-print 2 + 3.5 > 4
-print 5.999 >= 6 and 7 < 8
-print 5 < 6 and 7 <= 8
-print 5 > 6 or 7 < 8
-print 5.8 + -3 * 6
-print true or false and false
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						IntLiteral: 2
+					right:
+						BinaryExpression
+							operator: *
+							left:
+								IntLiteral: 2
+							right:
+								IntLiteral: 2
+		Print
+			expressions:
+				BinaryExpression
+					operator: *
+					left:
+						BinaryExpression
+							operator: +
+							left:
+								IntLiteral: 2
+							right:
+								IntLiteral: 2
+					right:
+						IntLiteral: 2
+		Print
+			expressions:
+				BinaryExpression
+					operator: -
+					left:
+						IntLiteral: 3
+					right:
+						BinaryExpression
+							operator: /
+							left:
+								IntLiteral: 5
+							right:
+								IntLiteral: 5
+		Print
+			expressions:
+				BinaryExpression
+					operator: /
+					left:
+						BinaryExpression
+							operator: -
+							left:
+								IntLiteral: 3
+							right:
+								IntLiteral: 5
+					right:
+						IntLiteral: 5
+		Print
+			expressions:
+				BinaryExpression
+					operator: >
+					left:
+						BinaryExpression
+							operator: +
+							left:
+								IntLiteral: 2
+							right:
+								RealLiteral: 3.500000
+					right:
+						IntLiteral: 4
+		Print
+			expressions:
+				BinaryExpression
+					operator: and
+					left:
+						BinaryExpression
+							operator: >=
+							left:
+								RealLiteral: 5.999000
+							right:
+								IntLiteral: 6
+					right:
+						BinaryExpression
+							operator: <
+							left:
+								IntLiteral: 7
+							right:
+								IntLiteral: 8
+		Print
+			expressions:
+				BinaryExpression
+					operator: and
+					left:
+						BinaryExpression
+							operator: <
+							left:
+								IntLiteral: 5
+							right:
+								IntLiteral: 6
+					right:
+						BinaryExpression
+							operator: <=
+							left:
+								IntLiteral: 7
+							right:
+								IntLiteral: 8
+		Print
+			expressions:
+				BinaryExpression
+					operator: or
+					left:
+						BinaryExpression
+							operator: >
+							left:
+								IntLiteral: 5
+							right:
+								IntLiteral: 6
+					right:
+						BinaryExpression
+							operator: <
+							left:
+								IntLiteral: 7
+							right:
+								IntLiteral: 8
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						RealLiteral: 5.800000
+					right:
+						BinaryExpression
+							operator: *
+							left:
+								UnaryExpression
+									operator: -
+									expression:
+										IntLiteral: 3
+							right:
+								IntLiteral: 6
+		Print
+			expressions:
+				BinaryExpression
+					operator: and
+					left:
+						BinaryExpression
+							operator: or
+							left:
+								BoolLiteral: true
+							right:
+								BoolLiteral: false
+					right:
+						BoolLiteral: false

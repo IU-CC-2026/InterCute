@@ -1,6 +1,46 @@
-var arr1 := [1, "a", 2]
-var arr2 := ["cat", "wolf", true, 28]
-var merged := arr1 + arr2
-for x in merged loop
-print x
-end
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr1
+					expression:
+						Array
+							items:
+								IntLiteral: 1
+								StringLiteral: "a"
+								RealLiteral: 2.000000
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr2
+					expression:
+						Array
+							items:
+								StringLiteral: "cat"
+								StringLiteral: "wolf"
+								BoolLiteral: true
+								IntLiteral: 28
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: merged
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								Reference
+									identifier: arr1
+							right:
+								Reference
+									identifier: arr2
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: merged
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

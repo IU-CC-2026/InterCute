@@ -1,1 +1,10 @@
-print 10 and true
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: and
+					left:
+						IntLiteral: 10
+					right:
+						BoolLiteral: true

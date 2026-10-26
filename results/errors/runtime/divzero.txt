@@ -1,1 +1,10 @@
-print 5 / 0
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: /
+					left:
+						IntLiteral: 5
+					right:
+						IntLiteral: 0

@@ -1,1 +1,0 @@
-Lexer error at line 1, column 12: Invalid character

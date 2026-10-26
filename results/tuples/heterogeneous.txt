@@ -1,6 +1,45 @@
-var tup := {a := 10, 2.5, c := '3'}
-for x in tup loop
-print x
-end
-print tup.a
-print tup.2
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup
+					expression:
+						Tuple
+							items:
+								TupleElement
+									identifier: a
+									expression:
+										IntLiteral: 10
+								TupleElement
+									expression:
+										RealLiteral: 2.500000
+								TupleElement
+									identifier: c
+									expression:
+										StringLiteral: '3'
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: tup
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x
+		Print
+			expressions:
+				Reference
+					identifier: tup
+					suffixes:
+						MemberSuffix
+							identifier: a
+		Print
+			expressions:
+				Reference
+					identifier: tup
+					suffixes:
+						TupleIndexSuffix
+							index:
+								IntLiteral: 2

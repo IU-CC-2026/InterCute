@@ -1,4 +1,22 @@
-var arr := [5, 10, 20]
-for x in arr loop
-print x
-end
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								IntLiteral: 5
+								IntLiteral: 10
+								IntLiteral: 20
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: arr
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

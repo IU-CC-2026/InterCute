@@ -1,4 +1,19 @@
-var tup := {}
-for x in tup loop
-print x
-end
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup
+					expression:
+						Tuple
+							items: []
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: tup
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

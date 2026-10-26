@@ -1,2 +1,17 @@
-var s := "hello"
-print s - "o"
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: s
+					expression:
+						StringLiteral: "hello"
+		Print
+			expressions:
+				BinaryExpression
+					operator: -
+					left:
+						Reference
+							identifier: s
+					right:
+						StringLiteral: "o"
