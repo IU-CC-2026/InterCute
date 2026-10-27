@@ -1,0 +1,67 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						RealLiteral: 1.500000
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: real
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				IntLiteral: 3
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: int
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				BoolLiteral: false
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: bool
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				StringLiteral: 'hi'
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: string
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				NoneLiteral: none
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: none

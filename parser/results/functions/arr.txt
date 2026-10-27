@@ -1,0 +1,65 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: sum
+					expression:
+						FunctionLiteral
+							arguments:
+								arr
+							body:
+								BlockBody
+									statements:
+										Assignment
+											reference:
+												Reference
+													identifier: total_sum
+											expression:
+												IntLiteral: 0
+										ForEachLoop
+											identifier: x
+											expr:
+												Reference
+													identifier: arr
+											body:
+												Assignment
+													reference:
+														Reference
+															identifier: total_sum
+													expression:
+														BinaryExpression
+															operator: +
+															left:
+																Reference
+																	identifier: total_sum
+															right:
+																Reference
+																	identifier: x
+										Return
+											result:
+												Reference
+													identifier: total_sum
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								IntLiteral: 1
+								IntLiteral: 10
+								IntLiteral: 8
+								UnaryExpression
+									operator: -
+									expression:
+										IntLiteral: 5
+		Print
+			expressions:
+				Reference
+					identifier: sum
+					suffixes:
+						CallSuffix
+							arguments:
+								Reference
+									identifier: arr

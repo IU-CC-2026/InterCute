@@ -1,0 +1,2 @@
+Syntax error at line 1, column 14: syntax error, unexpected NEWLINE
+

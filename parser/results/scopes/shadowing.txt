@@ -1,0 +1,37 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						IntLiteral: 10
+		If
+			condition:
+				BinaryExpression
+					operator: >
+					left:
+						Reference
+							identifier: x
+					right:
+						IntLiteral: 5
+			then:
+				Declaration
+					definitions:
+						VariableDefinition
+							identifier: x
+							expression:
+								IntLiteral: 5
+				Print
+					expressions:
+						Reference
+							identifier: x
+			else:
+				Print
+					expressions:
+						Reference
+							identifier: x
+		Print
+			expressions:
+				Reference
+					identifier: x

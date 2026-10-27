@@ -1,6 +1,7 @@
 #include "lexer/lexer.h"
 #include "parser/adapter.h"
 #include "parser/parser.hpp"
+#include "semantic/semantic_analyzer.h"
 
 #include <iostream>
 #include <fstream>
@@ -57,7 +58,16 @@ int main() {
             int parse_result = yyparse(root, parser_error);
 
             if (parse_result == 0 && root != nullptr) {
-                result << root->print(0) << '\n';
+                SemanticAnalyzer analyzer;
+                std::vector<SemanticError> errors = analyzer.analyze(root);
+
+                if (errors.empty()) {
+                    result << root->print(0) << '\n';
+                } else {
+                    for (const SemanticError& error : errors) {
+                        result << error.what() << '\n';
+                    }
+                }
             } else {
                 result << (parser_error.empty() ? "Parser Error" : parser_error) << '\n';
             }

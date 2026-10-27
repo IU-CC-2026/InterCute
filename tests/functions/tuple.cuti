@@ -1,6 +1,6 @@
 var make_tup := func(num, count)
     is
-        result_tup := {}
+        var result_tup := {}
 
         for i in 1..count loop
             result_tup := result_tup + {num}

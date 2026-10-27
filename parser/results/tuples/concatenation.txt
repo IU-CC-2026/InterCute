@@ -1,0 +1,65 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup1
+					expression:
+						Tuple
+							items:
+								TupleElement
+									identifier: a
+									expression:
+										StringLiteral: "hello"
+								TupleElement
+									expression:
+										StringLiteral: "hi"
+								TupleElement
+									expression:
+										IntLiteral: 2
+								TupleElement
+									expression:
+										RealLiteral: 10.900000
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup2
+					expression:
+						Tuple
+							items:
+								TupleElement
+									expression:
+										IntLiteral: 3
+								TupleElement
+									expression:
+										IntLiteral: 4
+								TupleElement
+									expression:
+										BoolLiteral: true
+								TupleElement
+									identifier: b
+									expression:
+										BoolLiteral: false
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: merged
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								Reference
+									identifier: tup1
+							right:
+								Reference
+									identifier: tup2
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: merged
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

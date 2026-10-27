@@ -73,17 +73,25 @@ static Reference* add_suffix(ASTNode* ref, ReferenceSuffix* suffix) {
     return r;
 }
 
-static BinaryExpression* binary(ASTNode* left, BinaryOperator op, ASTNode* right) {
-    return new BinaryExpression(expr(left), expr(right), op);
+static BinaryExpression* binary(ASTNode* left, BinaryOperator op, ASTNode* right, SourceLocation loc) {
+    BinaryExpression* b = new BinaryExpression(expr(left), expr(right), op);
+    b->loc = loc;
+    return b;
 }
 
-static UnaryExpression* unary(UnaryOperator op, ASTNode* operand) {
-    return new UnaryExpression(expr(operand), op);
+static UnaryExpression* unary(UnaryOperator op, ASTNode* operand, SourceLocation loc) {
+    UnaryExpression* u = new UnaryExpression(expr(operand), op);
+    u->loc = loc;
+    return u;
 }
 %}
 
 %code requires {
     #include "../ast/ast.h"
+}
+
+%code {
+    SourceLocation make_loc(const YYLTYPE& y);
 }
 
 %parse-param { Program*& root }
@@ -133,6 +141,7 @@ static UnaryExpression* unary(UnaryOperator op, ASTNode* operand) {
 program:
     body {
         root = new Program(take<Statement>($1));
+        root->loc = make_loc(@1);
         $$ = root;
     }
     ;
@@ -182,7 +191,9 @@ statement:
 
 declaration:
     VAR variable_definition_list {
-        $$ = new Declaration(take<VariableDefinition>($2));
+        Declaration* decl = new Declaration(take<VariableDefinition>($2));
+        decl->loc = make_loc(@1);
+        $$ = decl;
     }
     ;
 
@@ -197,95 +208,129 @@ variable_definition_list:
 
 variable_definition:
     IDENTIFIER {
-        $$ = new VariableDefinition(take_name($1));
+        VariableDefinition* vd = new VariableDefinition(take_name($1));
+        vd->loc = make_loc(@1);
+        $$ = vd;
     }
     | IDENTIFIER ASSIGN expression {
-        $$ = new VariableDefinition(take_name($1), expr($3));
+        VariableDefinition* vd = new VariableDefinition(take_name($1), expr($3));
+        vd->loc = make_loc(@1);
+        $$ = vd;
     }
     ;
 
 assignment:
     reference ASSIGN expression {
-        $$ = new Assignment(static_cast<Reference*>($1), expr($3));
+        Assignment* a = new Assignment(static_cast<Reference*>($1), expr($3));
+        a->loc = make_loc(@1);
+        $$ = a;
     }
     ;
 
 print_statement:
     PRINT argument_list {
-        $$ = new Print(take<Expression>($2));
+        Print* p = new Print(take<Expression>($2));
+        p->loc = make_loc(@1);
+        $$ = p;
     }
     ;
 
 return_statement:
     RETURN {
-        $$ = new Return();
+        Return* r = new Return();
+        r->loc = make_loc(@1);
+        $$ = r;
     }
     | RETURN expression {
-        $$ = new Return(expr($2));
+        Return* r = new Return(expr($2));
+        r->loc = make_loc(@1);
+        $$ = r;
     }
     ;
 
 exit_statement:
     EXIT {
-        $$ = new Exit();
+        Exit* e = new Exit();
+        e->loc = make_loc(@1);
+        $$ = e;
     }
     ;
 
 if_statement:
     IF expression THEN body END {
-        $$ = new If(expr($2), take<Statement>($4));
+        If* i = new If(expr($2), take<Statement>($4));
+        i->loc = make_loc(@1);
+        $$ = i;
     }
     | IF expression THEN body ELSE body END {
-        $$ = new If(expr($2), take<Statement>($4), take<Statement>($6));
+        If* i = new If(expr($2), take<Statement>($4), take<Statement>($6));
+        i->loc = make_loc(@1);
+        $$ = i;
     }
     | IF expression ARROW statement {
-        $$ = new IfShort(expr($2), std::vector<Statement*>{ static_cast<Statement*>($4) });
+        IfShort* i = new IfShort(expr($2), std::vector<Statement*>{ static_cast<Statement*>($4) });
+        i->loc = make_loc(@1);
+        $$ = i;
     }
     ;
 
 loop_statement:
     WHILE expression LOOP body END {
-        $$ = new WhileLoop(expr($2), take<Statement>($4));
+        WhileLoop* w = new WhileLoop(expr($2), take<Statement>($4));
+        w->loc = make_loc(@1);
+        $$ = w;
     }
     | LOOP body END {
-        $$ = new InfiniteLoop(take<Statement>($2));
+        InfiniteLoop* il = new InfiniteLoop(take<Statement>($2));
+        il->loc = make_loc(@1);
+        $$ = il;
     }
     | FOR IDENTIFIER IN expression LOOP body END {
-        $$ = new ForEachLoop(expr($4), take<Statement>($6), take_name($2));
+        ForEachLoop* f = new ForEachLoop(expr($4), take<Statement>($6), take_name($2));
+        f->loc = make_loc(@1);
+        $$ = f;
     }
     | FOR IDENTIFIER IN expression RANGE expression LOOP body END {
-        $$ = new ForRangeLoop(expr($4), expr($6), take<Statement>($8), take_name($2));
+        ForRangeLoop* f = new ForRangeLoop(expr($4), expr($6), take<Statement>($8), take_name($2));
+        f->loc = make_loc(@1);
+        $$ = f;
     }
     | FOR expression LOOP body END {
-        $$ = new ForEachLoop(expr($2), take<Statement>($4));
+        ForEachLoop* f = new ForEachLoop(expr($2), take<Statement>($4));
+        f->loc = make_loc(@1);
+        $$ = f;
     }
     | FOR expression RANGE expression LOOP body END {
-        $$ = new ForRangeLoop(expr($2), expr($4), take<Statement>($6));
+        ForRangeLoop* f = new ForRangeLoop(expr($2), expr($4), take<Statement>($6));
+        f->loc = make_loc(@1);
+        $$ = f;
     }
     ;
 
 expression:
-    expression OR expression    { $$ = binary($1, BinaryOperator::OR,  $3); }
-    | expression AND expression { $$ = binary($1, BinaryOperator::AND, $3); }
-    | expression XOR expression { $$ = binary($1, BinaryOperator::XOR, $3); }
-    | expression EQ expression  { $$ = binary($1, BinaryOperator::EQ,  $3); }
-    | expression NEQ expression { $$ = binary($1, BinaryOperator::NEQ, $3); }
-    | expression LT expression  { $$ = binary($1, BinaryOperator::LT,  $3); }
-    | expression LE expression  { $$ = binary($1, BinaryOperator::LE,  $3); }
-    | expression GT expression  { $$ = binary($1, BinaryOperator::GT,  $3); }
-    | expression GE expression  { $$ = binary($1, BinaryOperator::GE,  $3); }
-    | expression PLUS expression  { $$ = binary($1, BinaryOperator::ADD, $3); }
-    | expression MINUS expression { $$ = binary($1, BinaryOperator::SUB, $3); }
-    | expression MUL expression   { $$ = binary($1, BinaryOperator::MUL, $3); }
-    | expression DIV expression   { $$ = binary($1, BinaryOperator::DIV, $3); }
-    | NOT expression %prec UNARY   { $$ = unary(UnaryOperator::NOT,   $2); }
-    | PLUS expression %prec UNARY  { $$ = unary(UnaryOperator::PLUS,  $2); }
-    | MINUS expression %prec UNARY { $$ = unary(UnaryOperator::MINUS, $2); }
+    expression OR expression    { $$ = binary($1, BinaryOperator::OR,  $3, make_loc(@1)); }
+    | expression AND expression { $$ = binary($1, BinaryOperator::AND, $3, make_loc(@1)); }
+    | expression XOR expression { $$ = binary($1, BinaryOperator::XOR, $3, make_loc(@1)); }
+    | expression EQ expression  { $$ = binary($1, BinaryOperator::EQ,  $3, make_loc(@1)); }
+    | expression NEQ expression { $$ = binary($1, BinaryOperator::NEQ, $3, make_loc(@1)); }
+    | expression LT expression  { $$ = binary($1, BinaryOperator::LT,  $3, make_loc(@1)); }
+    | expression LE expression  { $$ = binary($1, BinaryOperator::LE,  $3, make_loc(@1)); }
+    | expression GT expression  { $$ = binary($1, BinaryOperator::GT,  $3, make_loc(@1)); }
+    | expression GE expression  { $$ = binary($1, BinaryOperator::GE,  $3, make_loc(@1)); }
+    | expression PLUS expression  { $$ = binary($1, BinaryOperator::ADD, $3, make_loc(@1)); }
+    | expression MINUS expression { $$ = binary($1, BinaryOperator::SUB, $3, make_loc(@1)); }
+    | expression MUL expression   { $$ = binary($1, BinaryOperator::MUL, $3, make_loc(@1)); }
+    | expression DIV expression   { $$ = binary($1, BinaryOperator::DIV, $3, make_loc(@1)); }
+    | NOT expression %prec UNARY   { $$ = unary(UnaryOperator::NOT,   $2, make_loc(@1)); }
+    | PLUS expression %prec UNARY  { $$ = unary(UnaryOperator::PLUS,  $2, make_loc(@1)); }
+    | MINUS expression %prec UNARY { $$ = unary(UnaryOperator::MINUS, $2, make_loc(@1)); }
     | OPEN_ROUND_BRACKET expression CLOSE_ROUND_BRACKET {
         $$ = $2;
     }
     | reference IS type_indicator {
-        $$ = new Is(static_cast<Reference*>($1), static_cast<TypeNode*>($3)->type);
+        Is* is = new Is(static_cast<Reference*>($1), static_cast<TypeNode*>($3)->type);
+        is->loc = make_loc(@1);
+        $$ = is;
     }
     | reference
     | literal
@@ -346,13 +391,17 @@ literal:
 
 array_literal:
     OPEN_SQUARE_BRACKET opt_argument_list CLOSE_SQUARE_BRACKET {
-        $$ = new Array(take<Expression>($2));
+        Array* a = new Array(take<Expression>($2));
+        a->loc = make_loc(@1);
+        $$ = a;
     }
     ;
 
 tuple_literal:
     OPEN_BRACE opt_tuple_element_list CLOSE_BRACE {
-        $$ = new Tuple(take<TupleElement>($2));
+        Tuple* t = new Tuple(take<TupleElement>($2));
+        t->loc = make_loc(@1);
+        $$ = t;
     }
     ;
 
@@ -372,16 +421,22 @@ opt_tuple_element_list:
 
 tuple_element:
     expression {
-        $$ = new TupleElement(expr($1));
+        TupleElement* te = new TupleElement(expr($1));
+        te->loc = make_loc(@1);
+        $$ = te;
     }
     | IDENTIFIER ASSIGN expression {
-        $$ = new TupleElement(expr($3), take_name($1));
+        TupleElement* te = new TupleElement(expr($3), take_name($1));
+        te->loc = make_loc(@1);
+        $$ = te;
     }
     ;
 
 function_literal:
     FUNC function_params function_body {
-        $$ = new FunctionLiteral(take_names($2), static_cast<FunctionBody*>($3));
+        FunctionLiteral* f = new FunctionLiteral(take_names($2), static_cast<FunctionBody*>($3));
+        f->loc = make_loc(@1);
+        $$ = f;
     }
     ;
 
@@ -406,10 +461,14 @@ parameter_list:
 
 function_body:
     opt_newlines IS body END {
-        $$ = new BlockBody(take<Statement>($3));
+        BlockBody* b = new BlockBody(take<Statement>($3));
+        b->loc = make_loc(@1);
+        $$ = b;
     }
     | ARROW expression %prec FUNC_BODY {
-        $$ = new ShortFunctionBody(expr($2));
+        ShortFunctionBody* b = new ShortFunctionBody(expr($2));
+        b->loc = make_loc(@1);
+        $$ = b;
     }
     ;
 

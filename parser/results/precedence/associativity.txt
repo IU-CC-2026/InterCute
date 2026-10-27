@@ -1,0 +1,94 @@
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: -
+					left:
+						BinaryExpression
+							operator: -
+							left:
+								IntLiteral: 10
+							right:
+								IntLiteral: 3
+					right:
+						IntLiteral: 2
+		Print
+			expressions:
+				BinaryExpression
+					operator: /
+					left:
+						BinaryExpression
+							operator: /
+							left:
+								IntLiteral: 100
+							right:
+								IntLiteral: 10
+					right:
+						IntLiteral: 5
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						IntLiteral: 2
+					right:
+						BinaryExpression
+							operator: *
+							left:
+								IntLiteral: 3
+							right:
+								IntLiteral: 4
+		Print
+			expressions:
+				BinaryExpression
+					operator: *
+					left:
+						BinaryExpression
+							operator: +
+							left:
+								IntLiteral: 2
+							right:
+								IntLiteral: 3
+					right:
+						IntLiteral: 4
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						BinaryExpression
+							operator: *
+							left:
+								IntLiteral: 2
+							right:
+								IntLiteral: 3
+					right:
+						BinaryExpression
+							operator: *
+							left:
+								IntLiteral: 4
+							right:
+								IntLiteral: 5
+		Print
+			expressions:
+				BinaryExpression
+					operator: *
+					left:
+						UnaryExpression
+							operator: -
+							expression:
+								IntLiteral: 2
+					right:
+						IntLiteral: 3
+		Print
+			expressions:
+				UnaryExpression
+					operator: -
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								IntLiteral: 2
+							right:
+								IntLiteral: 3

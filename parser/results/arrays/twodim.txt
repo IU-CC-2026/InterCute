@@ -1,0 +1,55 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: t1
+					expression:
+						Tuple
+							items:
+								TupleElement
+									expression:
+										IntLiteral: 1
+								TupleElement
+									expression:
+										IntLiteral: 2
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: t2
+					expression:
+						Tuple
+							items:
+								TupleElement
+									expression:
+										StringLiteral: "hello"
+								TupleElement
+									expression:
+										StringLiteral: "world"
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								Reference
+									identifier: t1
+								Reference
+									identifier: t2
+		ForEachLoop
+			identifier: tup
+			expr:
+				Reference
+					identifier: arr
+			body:
+				ForEachLoop
+					identifier: x
+					expr:
+						Reference
+							identifier: tup
+					body:
+						Print
+							expressions:
+								Reference
+									identifier: x
