@@ -1,1 +1,2 @@
-Parser Error
+Syntax error at line 6, column 33: syntax error, unexpected end of file, expecting END
+

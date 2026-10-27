@@ -5,7 +5,7 @@
 #include <vector>
 
 int yylex();
-void yyerror(Program*& root, const char* s);
+void yyerror(Program*& root, std::string& error, const char* s);
 
 struct NodeList : ASTNode {
     std::vector<ASTNode*> items;
@@ -87,6 +87,10 @@ static UnaryExpression* unary(UnaryOperator op, ASTNode* operand) {
 }
 
 %parse-param { Program*& root }
+%parse-param { std::string& error }
+
+%locations
+%define parse.error detailed
 
 %define api.value.type {ASTNode*}
 

@@ -52,13 +52,14 @@ int main() {
             Lexer lexer(source);
             set_lexer(&lexer);
 
+            std::string parser_error;
             Program* root = nullptr;
-            int parse_result = yyparse(root);
+            int parse_result = yyparse(root, parser_error);
 
             if (parse_result == 0 && root != nullptr) {
                 result << root->print(0) << '\n';
             } else {
-                result << "Parser Error" << std::endl;
+                result << (parser_error.empty() ? "Parser Error" : parser_error) << '\n';
             }
 
             delete root;
