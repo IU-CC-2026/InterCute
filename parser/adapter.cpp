@@ -101,6 +101,11 @@ int yylex() {
 
     Token token = lexer->get_token();
 
+    yylloc.first_line = token.line;
+    yylloc.last_line = token.line;
+    yylloc.first_column = token.column;
+    yylloc.last_column = token.column;
+
     try {
         switch (token.type) {
             case TokenType::INT_LITERAL:
@@ -144,6 +149,7 @@ int yylex() {
     return mapping(token.type);
 }
 
-void yyerror(Program*& root, const char* s) {
-    std::cerr << s << std::endl;
+void yyerror(Program*& root, std::string& error, const char* s) {
+    error = "Syntax error at line " + std::to_string(yylloc.first_line) +
+    ", column " + std::to_string(yylloc.first_column) + ": " + s + '\n';
 }
