@@ -2,6 +2,7 @@
 #include "parser/adapter.h"
 #include "parser/parser.hpp"
 #include "semantic/semantic_analyzer.h"
+#include "optimizer/optimizer.h"
 
 #include <iostream>
 #include <fstream>
@@ -62,6 +63,9 @@ int main() {
                 std::vector<SemanticError> errors = analyzer.analyze(root);
 
                 if (errors.empty()) {
+                    Optimizer optimizer;
+                    optimizer.optimize(root);
+
                     result << root->print(0) << '\n';
                 } else {
                     for (const SemanticError& error : errors) {
