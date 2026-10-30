@@ -52,6 +52,12 @@ private:
 
     bool analyze_reference(Reference* reference);
 
+    bool analyze_range_boundary(Expression* expression);
+
+    bool analyze_iterable_expression(Expression* expression);
+
+    bool analyze_none_operand(Expression* expression);
+
     void report(unsigned int line, unsigned int column, const std::string& message);
     void report(const std::string& message);
 };

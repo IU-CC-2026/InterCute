@@ -7,6 +7,7 @@ void SemanticAnalyzer::report(unsigned int line, unsigned int column, const std:
     this->errors.push_back(SemanticError(line, column, message));
 }
 
+
 void SemanticAnalyzer::report(const std::string& message) {
     this->errors.push_back(SemanticError(message));
 }
@@ -16,12 +17,14 @@ void SemanticAnalyzer::enter_scope() {
     this->scopes.push_back({});
 }
 
+
 void SemanticAnalyzer::exit_scope() {
     if (this->scopes.size() <= 1)
         throw std::logic_error("Global scope cannot be exited");
         
     this->scopes.pop_back();
 }
+
 
 void SemanticAnalyzer::declare_variable(const std::string& name) {
     if (this->scopes.empty())
@@ -31,6 +34,7 @@ void SemanticAnalyzer::declare_variable(const std::string& name) {
 
     current_scope.insert(name);
 }
+
 
 bool SemanticAnalyzer::is_declared_in_cur_scope(const std::string& name) const {
     if (this->scopes.empty())
@@ -44,6 +48,7 @@ bool SemanticAnalyzer::is_declared_in_cur_scope(const std::string& name) const {
 
     return false;
 }
+
 
 bool SemanticAnalyzer::is_declared(const std::string& name) const {
     if (this->scopes.empty())
@@ -201,6 +206,10 @@ bool SemanticAnalyzer::analyze_statement(Statement* statement) {
             valid = false;
         }
 
+        if (!this->analyze_iterable_expression(for_each_loop->expr)) {
+            valid = false;
+        }
+
         this->cycle_depth++;
         this->enter_scope();
         if (for_each_loop->identifier.has_value()) {
@@ -222,6 +231,13 @@ bool SemanticAnalyzer::analyze_statement(Statement* statement) {
             valid = false;
         }
         if (!this->analyze_expression(for_range_loop->second_expr)) {
+            valid = false;
+        }
+
+        if (!this->analyze_range_boundary(for_range_loop->first_expr)) {
+            valid = false;
+        }
+        if (!this->analyze_range_boundary(for_range_loop->second_expr)) {
             valid = false;
         }
 
@@ -292,11 +308,16 @@ bool SemanticAnalyzer::analyze_expression(Expression* expression) {
         bool left_valid = this->analyze_expression(bin_expr->left);
         bool right_valid = this->analyze_expression(bin_expr->right);
 
-        return left_valid && right_valid;
+        bool left_none = this->analyze_none_operand(bin_expr->left);
+        bool right_none = this->analyze_none_operand(bin_expr->right);
+
+        return left_valid && right_valid & left_none && right_none;
     } else if (auto* unary_expr = dynamic_cast<UnaryExpression*>(expression)) {
         bool expr_valid = this->analyze_expression(unary_expr->expr);
 
-        return expr_valid;
+        bool expr_none = this->analyze_none_operand(unary_expr->expr);
+
+        return expr_valid && expr_none;
     } else if (auto* ref = dynamic_cast<Reference*>(expression)) {
         bool ref_valid = this->analyze_reference(ref);
 
@@ -318,11 +339,26 @@ bool SemanticAnalyzer::analyze_expression(Expression* expression) {
     } else if (auto* tuple = dynamic_cast<Tuple*>(expression)) {
         bool valid = true;
 
+        std::unordered_set<std::string> seen_names;
+
         for (TupleElement* tuple_el : tuple->items) {
             if (tuple_el == nullptr) {
                 this->report("Null tuple element");
                 valid = false;
-            } else if (!this->analyze_expression(tuple_el->expr)) {
+                continue;
+            }
+
+            if (tuple_el->identifier.has_value()) {
+                const std::string& name = *(tuple_el->identifier);
+                if (seen_names.find(name) != seen_names.end()) {
+                    this->report(tuple_el->loc.first_line, tuple_el->loc.first_column, "Duplicate tuple element name: " + name);
+                    valid = false;
+                } else {
+                    seen_names.insert(name);
+                }
+            }
+
+            if (!this->analyze_expression(tuple_el->expr)) {
                 valid = false;
             }
         }
@@ -394,6 +430,10 @@ bool SemanticAnalyzer::analyze_reference(Reference* reference) {
             if (!this->analyze_expression(array_idx->index)) {
                 valid = false;
             }
+
+            if (!this->analyze_none_operand(array_idx->index)) {
+                valid = false;
+            }
         } else if (auto* call = dynamic_cast<CallSuffix*>(suffix)) {
             for (Expression* arg : call->args) {
                 if (!this->analyze_expression(arg)) {
@@ -409,4 +449,53 @@ bool SemanticAnalyzer::analyze_reference(Reference* reference) {
     }
 
     return valid;
+}
+
+
+bool SemanticAnalyzer::analyze_range_boundary(Expression* expression) {
+    if (expression == nullptr) {
+        this->report("Null range boundary");
+        return false;
+    }
+
+    if (dynamic_cast<IntLiteral*>(expression) || dynamic_cast<Reference*>(expression)
+        || dynamic_cast<BinaryExpression*>(expression) || dynamic_cast<UnaryExpression*>(expression)) {
+        return true;
+    }
+
+    this->report(expression->loc.first_line, expression->loc.first_column, "Invalid type of range boundary\n" + expression->print());
+
+    return false;
+}
+
+
+bool SemanticAnalyzer::analyze_iterable_expression(Expression* expression) {
+    if (expression == nullptr) {
+        this->report("Null iterable expression");
+        return false;
+    }
+
+    if (dynamic_cast<Array*>(expression) || dynamic_cast<Tuple*>(expression)
+        || dynamic_cast<BinaryExpression*>(expression) || dynamic_cast<Reference*>(expression)) {
+        return true;
+    }
+
+    this->report(expression->loc.first_line, expression->loc.first_column, "Non-iterable object:\n" + expression->print());
+
+    return false;
+}
+
+
+bool SemanticAnalyzer::analyze_none_operand(Expression* expression) {
+    if (expression == nullptr) {
+        this->report("Null operand");
+        return false;
+    }
+
+    if (dynamic_cast<NoneLiteral*>(expression)) {
+        this->report(expression->loc.first_line, expression->loc.first_column, "None cannot be used as an operand");
+        return false;
+    }
+
+    return true;
 }
