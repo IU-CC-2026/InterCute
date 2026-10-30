@@ -1,0 +1,33 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: e
+					expression:
+						Array
+							items: []
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup
+					expression:
+						Tuple
+							items: []
+		Print
+			expressions:
+				IntLiteral: 1
+		Print
+			expressions:
+				Array
+					items:
+						Array
+							items: []
+						Tuple
+							items: []
+						Array
+							items:
+								IntLiteral: 1
+								Array
+									items:
+										IntLiteral: 2

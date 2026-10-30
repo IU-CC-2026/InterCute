@@ -1,0 +1,21 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						IntLiteral: 1
+		Assignment
+			reference:
+				Reference
+					identifier: x
+			expression:
+				NoneLiteral: none
+		Print
+			expressions:
+				Is
+					reference:
+						Reference
+							identifier: x
+					type: none

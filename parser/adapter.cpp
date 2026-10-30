@@ -94,6 +94,17 @@ int mapping(TokenType type) {
 }
 
 
+SourceLocation make_loc(const YYLTYPE& y) {
+    SourceLocation loc;
+    loc.first_line   = y.first_line;
+    loc.first_column = y.first_column;
+    loc.last_line    = y.last_line;
+    loc.last_column  = y.last_column;
+
+    return loc;
+}
+
+
 int yylex() {
     if (lexer == nullptr) {
         return YYEOF;
@@ -108,33 +119,54 @@ int yylex() {
 
     try {
         switch (token.type) {
-            case TokenType::INT_LITERAL:
-                yylval = new IntLiteral(std::stoi(token.value));
+            case TokenType::INT_LITERAL: {
+                IntLiteral* lit = new IntLiteral(std::stoi(token.value));
+                lit->loc = make_loc(yylloc);
+                yylval = lit;
                 break;
+            }
 
-            case TokenType::REAL_LITERAL:
-                yylval = new RealLiteral(std::stod(token.value));
+            case TokenType::REAL_LITERAL: {
+                RealLiteral* lit = new RealLiteral(std::stod(token.value));
+                lit->loc = make_loc(yylloc);
+                yylval = lit;
                 break;
+            }
 
-            case TokenType::STRING_LITERAL:
-                yylval = new StringLiteral(token.value);
+            case TokenType::STRING_LITERAL: {
+                StringLiteral* lit = new StringLiteral(token.value);
+                lit->loc = make_loc(yylloc);
+                yylval = lit;
                 break;
+            }
 
-            case TokenType::TRUE:
-                yylval = new BoolLiteral(true);
+            case TokenType::TRUE: {
+                BoolLiteral* lit = new BoolLiteral(true);
+                lit->loc = make_loc(yylloc);
+                yylval = lit;
                 break;
+            }
             
-            case TokenType::FALSE:
-                yylval = new BoolLiteral(false);
+            case TokenType::FALSE: {
+                BoolLiteral* lit = new BoolLiteral(false);
+                lit->loc = make_loc(yylloc);
+                yylval = lit;
                 break;
+            }
 
-            case TokenType::NONE:
-                yylval = new NoneLiteral();
+            case TokenType::NONE: {
+                NoneLiteral* lit = new NoneLiteral();
+                lit->loc = make_loc(yylloc);
+                yylval = lit;
                 break;
+            }
 
-            case TokenType::IDENTIFIER:
-                yylval = new Reference(token.value);
+            case TokenType::IDENTIFIER: {
+                Reference* ref = new Reference(token.value);
+                ref->loc = make_loc(yylloc);
+                yylval = ref;
                 break;
+            }
 
             default:
                 yylval = nullptr;

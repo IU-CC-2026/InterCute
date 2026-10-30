@@ -7,8 +7,18 @@
 #include <iostream>
 
 
+struct SourceLocation {
+    unsigned int first_line = 0;
+    unsigned int first_column = 0;
+    unsigned int last_line = 0;
+    unsigned int last_column = 0;
+};
+
+
 class ASTNode {
 public:
+    SourceLocation loc;
+
     virtual ~ASTNode() = default;
     virtual std::string print(int level = 0) = 0;
 };
@@ -226,15 +236,6 @@ public:
     std::string print(int level) override;
 };
 
-class Declaration : public Statement {
-public:
-    std::vector<VariableDefinition*> definitions;
-
-    Declaration(std::vector<VariableDefinition*> definitions);
-
-    std::string print(int level) override;
-};
-
 class Is : public Expression {
 public:
     Reference* ref;
@@ -246,13 +247,21 @@ public:
 };
 
 
-
 // Statements
 class Program : public ASTNode {
 public:
     std::vector<Statement*> statements;
 
     Program(std::vector<Statement*> statements);
+
+    std::string print(int level) override;
+};
+
+class Declaration : public Statement {
+public:
+    std::vector<VariableDefinition*> definitions;
+
+    Declaration(std::vector<VariableDefinition*> definitions);
 
     std::string print(int level) override;
 };

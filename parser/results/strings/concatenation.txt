@@ -1,0 +1,36 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: s1
+					expression:
+						StringLiteral: 'good'
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: s2
+					expression:
+						StringLiteral: "job"
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: merged
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								BinaryExpression
+									operator: +
+									left:
+										Reference
+											identifier: s1
+									right:
+										StringLiteral: " "
+							right:
+								Reference
+									identifier: s2
+		Print
+			expressions:
+				Reference
+					identifier: merged

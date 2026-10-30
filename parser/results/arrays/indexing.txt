@@ -1,0 +1,28 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								IntLiteral: 5
+								IntLiteral: 10
+								IntLiteral: 20
+		Print
+			expressions:
+				Reference
+					identifier: arr
+					suffixes:
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 1
+		Print
+			expressions:
+				Reference
+					identifier: arr
+					suffixes:
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 3

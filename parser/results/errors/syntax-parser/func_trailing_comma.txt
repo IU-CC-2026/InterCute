@@ -1,0 +1,2 @@
+Syntax error at line 1, column 18: syntax error, unexpected CLOSE_ROUND_BRACKET, expecting IDENTIFIER
+

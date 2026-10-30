@@ -11,12 +11,12 @@ Program
 							body:
 								BlockBody
 									statements:
-										Assignment
-											reference:
-												Reference
+										Declaration
+											definitions:
+												VariableDefinition
 													identifier: total_sum
-											expression:
-												IntLiteral: 0
+													expression:
+														IntLiteral: 0
 										ForEachLoop
 											identifier: x
 											expr:

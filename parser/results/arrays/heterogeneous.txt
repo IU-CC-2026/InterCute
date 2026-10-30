@@ -1,0 +1,25 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								StringLiteral: "a"
+								StringLiteral: 'b'
+								IntLiteral: 10
+								StringLiteral: "hello"
+								RealLiteral: 1.500000
+								BoolLiteral: true
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: arr
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

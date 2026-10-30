@@ -1,0 +1,10 @@
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: >
+					left:
+						StringLiteral: "a"
+					right:
+						IntLiteral: 5

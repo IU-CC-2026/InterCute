@@ -1,4 +1,3 @@
-FOR(for)
 LOOP(loop)
 NEWLINE(\n)
 PRINT(print)

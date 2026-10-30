@@ -143,15 +143,19 @@ static Reference* add_suffix(ASTNode* ref, ReferenceSuffix* suffix) {
     return r;
 }
 
-static BinaryExpression* binary(ASTNode* left, BinaryOperator op, ASTNode* right) {
-    return new BinaryExpression(expr(left), expr(right), op);
+static BinaryExpression* binary(ASTNode* left, BinaryOperator op, ASTNode* right, SourceLocation loc) {
+    BinaryExpression* b = new BinaryExpression(expr(left), expr(right), op);
+    b->loc = loc;
+    return b;
 }
 
-static UnaryExpression* unary(UnaryOperator op, ASTNode* operand) {
-    return new UnaryExpression(expr(operand), op);
+static UnaryExpression* unary(UnaryOperator op, ASTNode* operand, SourceLocation loc) {
+    UnaryExpression* u = new UnaryExpression(expr(operand), op);
+    u->loc = loc;
+    return u;
 }
 
-#line 155 "parser/parser.cpp"
+#line 159 "parser/parser.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -274,6 +278,12 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
 
 
 
+/* Unqualified %code blocks.  */
+#line 93 "parser/parser.y"
+
+    SourceLocation make_loc(const YYLTYPE& y);
+
+#line 287 "parser/parser.cpp"
 
 #ifdef short
 # undef short
@@ -663,17 +673,17 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   134,   134,   141,   144,   150,   153,   159,   160,   164,
-     165,   169,   170,   174,   175,   176,   177,   178,   179,   180,
-     184,   190,   193,   199,   202,   208,   214,   220,   223,   229,
-     235,   238,   241,   247,   250,   253,   256,   259,   262,   268,
-     269,   270,   271,   272,   273,   274,   275,   276,   277,   278,
-     279,   280,   281,   282,   283,   284,   287,   290,   291,   295,
-     296,   299,   302,   305,   311,   314,   320,   321,   325,   326,
-     327,   328,   329,   330,   331,   332,   336,   337,   338,   339,
-     340,   341,   342,   343,   344,   348,   354,   360,   363,   369,
-     370,   374,   377,   383,   389,   390,   393,   399,   402,   408,
-     411,   417,   418
+       0,   142,   142,   150,   153,   159,   162,   168,   169,   173,
+     174,   178,   179,   183,   184,   185,   186,   187,   188,   189,
+     193,   201,   204,   210,   215,   223,   231,   239,   244,   252,
+     260,   265,   270,   278,   283,   288,   293,   298,   303,   311,
+     312,   313,   314,   315,   316,   317,   318,   319,   320,   321,
+     322,   323,   324,   325,   326,   327,   330,   335,   336,   340,
+     341,   344,   347,   350,   356,   359,   365,   366,   370,   371,
+     372,   373,   374,   375,   376,   377,   381,   382,   383,   384,
+     385,   386,   387,   388,   389,   393,   401,   409,   412,   418,
+     419,   423,   428,   436,   444,   445,   448,   454,   457,   463,
+     468,   476,   477
 };
 #endif
 
@@ -1740,542 +1750,593 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: body  */
-#line 134 "parser/parser.y"
+#line 142 "parser/parser.y"
          {
         root = new Program(take<Statement>(yyvsp[0]));
+        root->loc = make_loc((yylsp[0]));
         yyval = root;
     }
-#line 1749 "parser/parser.cpp"
+#line 1760 "parser/parser.cpp"
     break;
 
   case 3: /* body: opt_seps  */
-#line 141 "parser/parser.y"
+#line 150 "parser/parser.y"
              {
         yyval = new_list();
     }
-#line 1757 "parser/parser.cpp"
+#line 1768 "parser/parser.cpp"
     break;
 
   case 4: /* body: opt_seps statement_list opt_seps  */
-#line 144 "parser/parser.y"
+#line 153 "parser/parser.y"
                                        {
         yyval = yyvsp[-1];
     }
-#line 1765 "parser/parser.cpp"
+#line 1776 "parser/parser.cpp"
     break;
 
   case 5: /* statement_list: statement  */
-#line 150 "parser/parser.y"
+#line 159 "parser/parser.y"
               {
         yyval = list_of(yyvsp[0]);
     }
-#line 1773 "parser/parser.cpp"
+#line 1784 "parser/parser.cpp"
     break;
 
   case 6: /* statement_list: statement_list seps statement  */
-#line 153 "parser/parser.y"
+#line 162 "parser/parser.y"
                                     {
         yyval = list_add(yyvsp[-2], yyvsp[0]);
     }
-#line 1781 "parser/parser.cpp"
+#line 1792 "parser/parser.cpp"
     break;
 
   case 11: /* opt_seps: %empty  */
-#line 169 "parser/parser.y"
+#line 178 "parser/parser.y"
            { yyval = nullptr; }
-#line 1787 "parser/parser.cpp"
+#line 1798 "parser/parser.cpp"
     break;
 
   case 20: /* declaration: VAR variable_definition_list  */
-#line 184 "parser/parser.y"
+#line 193 "parser/parser.y"
                                  {
-        yyval = new Declaration(take<VariableDefinition>(yyvsp[0]));
+        Declaration* decl = new Declaration(take<VariableDefinition>(yyvsp[0]));
+        decl->loc = make_loc((yylsp[-1]));
+        yyval = decl;
     }
-#line 1795 "parser/parser.cpp"
+#line 1808 "parser/parser.cpp"
     break;
 
   case 21: /* variable_definition_list: variable_definition  */
-#line 190 "parser/parser.y"
+#line 201 "parser/parser.y"
                         {
         yyval = list_of(yyvsp[0]);
     }
-#line 1803 "parser/parser.cpp"
+#line 1816 "parser/parser.cpp"
     break;
 
   case 22: /* variable_definition_list: variable_definition_list COMMA variable_definition  */
-#line 193 "parser/parser.y"
+#line 204 "parser/parser.y"
                                                          {
         yyval = list_add(yyvsp[-2], yyvsp[0]);
     }
-#line 1811 "parser/parser.cpp"
+#line 1824 "parser/parser.cpp"
     break;
 
   case 23: /* variable_definition: IDENTIFIER  */
-#line 199 "parser/parser.y"
+#line 210 "parser/parser.y"
                {
-        yyval = new VariableDefinition(take_name(yyvsp[0]));
+        VariableDefinition* vd = new VariableDefinition(take_name(yyvsp[0]));
+        vd->loc = make_loc((yylsp[0]));
+        yyval = vd;
     }
-#line 1819 "parser/parser.cpp"
+#line 1834 "parser/parser.cpp"
     break;
 
   case 24: /* variable_definition: IDENTIFIER ASSIGN expression  */
-#line 202 "parser/parser.y"
+#line 215 "parser/parser.y"
                                    {
-        yyval = new VariableDefinition(take_name(yyvsp[-2]), expr(yyvsp[0]));
+        VariableDefinition* vd = new VariableDefinition(take_name(yyvsp[-2]), expr(yyvsp[0]));
+        vd->loc = make_loc((yylsp[-2]));
+        yyval = vd;
     }
-#line 1827 "parser/parser.cpp"
+#line 1844 "parser/parser.cpp"
     break;
 
   case 25: /* assignment: reference ASSIGN expression  */
-#line 208 "parser/parser.y"
+#line 223 "parser/parser.y"
                                 {
-        yyval = new Assignment(static_cast<Reference*>(yyvsp[-2]), expr(yyvsp[0]));
+        Assignment* a = new Assignment(static_cast<Reference*>(yyvsp[-2]), expr(yyvsp[0]));
+        a->loc = make_loc((yylsp[-2]));
+        yyval = a;
     }
-#line 1835 "parser/parser.cpp"
+#line 1854 "parser/parser.cpp"
     break;
 
   case 26: /* print_statement: PRINT argument_list  */
-#line 214 "parser/parser.y"
+#line 231 "parser/parser.y"
                         {
-        yyval = new Print(take<Expression>(yyvsp[0]));
+        Print* p = new Print(take<Expression>(yyvsp[0]));
+        p->loc = make_loc((yylsp[-1]));
+        yyval = p;
     }
-#line 1843 "parser/parser.cpp"
+#line 1864 "parser/parser.cpp"
     break;
 
   case 27: /* return_statement: RETURN  */
-#line 220 "parser/parser.y"
+#line 239 "parser/parser.y"
            {
-        yyval = new Return();
+        Return* r = new Return();
+        r->loc = make_loc((yylsp[0]));
+        yyval = r;
     }
-#line 1851 "parser/parser.cpp"
+#line 1874 "parser/parser.cpp"
     break;
 
   case 28: /* return_statement: RETURN expression  */
-#line 223 "parser/parser.y"
+#line 244 "parser/parser.y"
                         {
-        yyval = new Return(expr(yyvsp[0]));
+        Return* r = new Return(expr(yyvsp[0]));
+        r->loc = make_loc((yylsp[-1]));
+        yyval = r;
     }
-#line 1859 "parser/parser.cpp"
+#line 1884 "parser/parser.cpp"
     break;
 
   case 29: /* exit_statement: EXIT  */
-#line 229 "parser/parser.y"
+#line 252 "parser/parser.y"
          {
-        yyval = new Exit();
+        Exit* e = new Exit();
+        e->loc = make_loc((yylsp[0]));
+        yyval = e;
     }
-#line 1867 "parser/parser.cpp"
+#line 1894 "parser/parser.cpp"
     break;
 
   case 30: /* if_statement: IF expression THEN body END  */
-#line 235 "parser/parser.y"
+#line 260 "parser/parser.y"
                                 {
-        yyval = new If(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        If* i = new If(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        i->loc = make_loc((yylsp[-4]));
+        yyval = i;
     }
-#line 1875 "parser/parser.cpp"
+#line 1904 "parser/parser.cpp"
     break;
 
   case 31: /* if_statement: IF expression THEN body ELSE body END  */
-#line 238 "parser/parser.y"
+#line 265 "parser/parser.y"
                                             {
-        yyval = new If(expr(yyvsp[-5]), take<Statement>(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        If* i = new If(expr(yyvsp[-5]), take<Statement>(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        i->loc = make_loc((yylsp[-6]));
+        yyval = i;
     }
-#line 1883 "parser/parser.cpp"
+#line 1914 "parser/parser.cpp"
     break;
 
   case 32: /* if_statement: IF expression ARROW statement  */
-#line 241 "parser/parser.y"
+#line 270 "parser/parser.y"
                                     {
-        yyval = new IfShort(expr(yyvsp[-2]), std::vector<Statement*>{ static_cast<Statement*>(yyvsp[0]) });
+        IfShort* i = new IfShort(expr(yyvsp[-2]), std::vector<Statement*>{ static_cast<Statement*>(yyvsp[0]) });
+        i->loc = make_loc((yylsp[-3]));
+        yyval = i;
     }
-#line 1891 "parser/parser.cpp"
+#line 1924 "parser/parser.cpp"
     break;
 
   case 33: /* loop_statement: WHILE expression LOOP body END  */
-#line 247 "parser/parser.y"
+#line 278 "parser/parser.y"
                                    {
-        yyval = new WhileLoop(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        WhileLoop* w = new WhileLoop(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        w->loc = make_loc((yylsp[-4]));
+        yyval = w;
     }
-#line 1899 "parser/parser.cpp"
+#line 1934 "parser/parser.cpp"
     break;
 
   case 34: /* loop_statement: LOOP body END  */
-#line 250 "parser/parser.y"
+#line 283 "parser/parser.y"
                     {
-        yyval = new InfiniteLoop(take<Statement>(yyvsp[-1]));
+        InfiniteLoop* il = new InfiniteLoop(take<Statement>(yyvsp[-1]));
+        il->loc = make_loc((yylsp[-2]));
+        yyval = il;
     }
-#line 1907 "parser/parser.cpp"
+#line 1944 "parser/parser.cpp"
     break;
 
   case 35: /* loop_statement: FOR IDENTIFIER IN expression LOOP body END  */
-#line 253 "parser/parser.y"
+#line 288 "parser/parser.y"
                                                  {
-        yyval = new ForEachLoop(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]), take_name(yyvsp[-5]));
+        ForEachLoop* f = new ForEachLoop(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]), take_name(yyvsp[-5]));
+        f->loc = make_loc((yylsp[-6]));
+        yyval = f;
     }
-#line 1915 "parser/parser.cpp"
+#line 1954 "parser/parser.cpp"
     break;
 
   case 36: /* loop_statement: FOR IDENTIFIER IN expression RANGE expression LOOP body END  */
-#line 256 "parser/parser.y"
+#line 293 "parser/parser.y"
                                                                   {
-        yyval = new ForRangeLoop(expr(yyvsp[-5]), expr(yyvsp[-3]), take<Statement>(yyvsp[-1]), take_name(yyvsp[-7]));
+        ForRangeLoop* f = new ForRangeLoop(expr(yyvsp[-5]), expr(yyvsp[-3]), take<Statement>(yyvsp[-1]), take_name(yyvsp[-7]));
+        f->loc = make_loc((yylsp[-8]));
+        yyval = f;
     }
-#line 1923 "parser/parser.cpp"
+#line 1964 "parser/parser.cpp"
     break;
 
   case 37: /* loop_statement: FOR expression LOOP body END  */
-#line 259 "parser/parser.y"
+#line 298 "parser/parser.y"
                                    {
-        yyval = new ForEachLoop(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        ForEachLoop* f = new ForEachLoop(expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        f->loc = make_loc((yylsp[-4]));
+        yyval = f;
     }
-#line 1931 "parser/parser.cpp"
+#line 1974 "parser/parser.cpp"
     break;
 
   case 38: /* loop_statement: FOR expression RANGE expression LOOP body END  */
-#line 262 "parser/parser.y"
+#line 303 "parser/parser.y"
                                                     {
-        yyval = new ForRangeLoop(expr(yyvsp[-5]), expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        ForRangeLoop* f = new ForRangeLoop(expr(yyvsp[-5]), expr(yyvsp[-3]), take<Statement>(yyvsp[-1]));
+        f->loc = make_loc((yylsp[-6]));
+        yyval = f;
     }
-#line 1939 "parser/parser.cpp"
+#line 1984 "parser/parser.cpp"
     break;
 
   case 39: /* expression: expression OR expression  */
-#line 268 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::OR,  yyvsp[0]); }
-#line 1945 "parser/parser.cpp"
+#line 311 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::OR,  yyvsp[0], make_loc((yylsp[-2]))); }
+#line 1990 "parser/parser.cpp"
     break;
 
   case 40: /* expression: expression AND expression  */
-#line 269 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::AND, yyvsp[0]); }
-#line 1951 "parser/parser.cpp"
+#line 312 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::AND, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 1996 "parser/parser.cpp"
     break;
 
   case 41: /* expression: expression XOR expression  */
-#line 270 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::XOR, yyvsp[0]); }
-#line 1957 "parser/parser.cpp"
+#line 313 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::XOR, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2002 "parser/parser.cpp"
     break;
 
   case 42: /* expression: expression EQ expression  */
-#line 271 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::EQ,  yyvsp[0]); }
-#line 1963 "parser/parser.cpp"
+#line 314 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::EQ,  yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2008 "parser/parser.cpp"
     break;
 
   case 43: /* expression: expression NEQ expression  */
-#line 272 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::NEQ, yyvsp[0]); }
-#line 1969 "parser/parser.cpp"
+#line 315 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::NEQ, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2014 "parser/parser.cpp"
     break;
 
   case 44: /* expression: expression LT expression  */
-#line 273 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::LT,  yyvsp[0]); }
-#line 1975 "parser/parser.cpp"
+#line 316 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::LT,  yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2020 "parser/parser.cpp"
     break;
 
   case 45: /* expression: expression LE expression  */
-#line 274 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::LE,  yyvsp[0]); }
-#line 1981 "parser/parser.cpp"
+#line 317 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::LE,  yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2026 "parser/parser.cpp"
     break;
 
   case 46: /* expression: expression GT expression  */
-#line 275 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::GT,  yyvsp[0]); }
-#line 1987 "parser/parser.cpp"
+#line 318 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::GT,  yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2032 "parser/parser.cpp"
     break;
 
   case 47: /* expression: expression GE expression  */
-#line 276 "parser/parser.y"
-                                { yyval = binary(yyvsp[-2], BinaryOperator::GE,  yyvsp[0]); }
-#line 1993 "parser/parser.cpp"
+#line 319 "parser/parser.y"
+                                { yyval = binary(yyvsp[-2], BinaryOperator::GE,  yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2038 "parser/parser.cpp"
     break;
 
   case 48: /* expression: expression PLUS expression  */
-#line 277 "parser/parser.y"
-                                  { yyval = binary(yyvsp[-2], BinaryOperator::ADD, yyvsp[0]); }
-#line 1999 "parser/parser.cpp"
+#line 320 "parser/parser.y"
+                                  { yyval = binary(yyvsp[-2], BinaryOperator::ADD, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2044 "parser/parser.cpp"
     break;
 
   case 49: /* expression: expression MINUS expression  */
-#line 278 "parser/parser.y"
-                                  { yyval = binary(yyvsp[-2], BinaryOperator::SUB, yyvsp[0]); }
-#line 2005 "parser/parser.cpp"
+#line 321 "parser/parser.y"
+                                  { yyval = binary(yyvsp[-2], BinaryOperator::SUB, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2050 "parser/parser.cpp"
     break;
 
   case 50: /* expression: expression MUL expression  */
-#line 279 "parser/parser.y"
-                                  { yyval = binary(yyvsp[-2], BinaryOperator::MUL, yyvsp[0]); }
-#line 2011 "parser/parser.cpp"
+#line 322 "parser/parser.y"
+                                  { yyval = binary(yyvsp[-2], BinaryOperator::MUL, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2056 "parser/parser.cpp"
     break;
 
   case 51: /* expression: expression DIV expression  */
-#line 280 "parser/parser.y"
-                                  { yyval = binary(yyvsp[-2], BinaryOperator::DIV, yyvsp[0]); }
-#line 2017 "parser/parser.cpp"
+#line 323 "parser/parser.y"
+                                  { yyval = binary(yyvsp[-2], BinaryOperator::DIV, yyvsp[0], make_loc((yylsp[-2]))); }
+#line 2062 "parser/parser.cpp"
     break;
 
   case 52: /* expression: NOT expression  */
-#line 281 "parser/parser.y"
-                                   { yyval = unary(UnaryOperator::NOT,   yyvsp[0]); }
-#line 2023 "parser/parser.cpp"
+#line 324 "parser/parser.y"
+                                   { yyval = unary(UnaryOperator::NOT,   yyvsp[0], make_loc((yylsp[-1]))); }
+#line 2068 "parser/parser.cpp"
     break;
 
   case 53: /* expression: PLUS expression  */
-#line 282 "parser/parser.y"
-                                   { yyval = unary(UnaryOperator::PLUS,  yyvsp[0]); }
-#line 2029 "parser/parser.cpp"
+#line 325 "parser/parser.y"
+                                   { yyval = unary(UnaryOperator::PLUS,  yyvsp[0], make_loc((yylsp[-1]))); }
+#line 2074 "parser/parser.cpp"
     break;
 
   case 54: /* expression: MINUS expression  */
-#line 283 "parser/parser.y"
-                                   { yyval = unary(UnaryOperator::MINUS, yyvsp[0]); }
-#line 2035 "parser/parser.cpp"
+#line 326 "parser/parser.y"
+                                   { yyval = unary(UnaryOperator::MINUS, yyvsp[0], make_loc((yylsp[-1]))); }
+#line 2080 "parser/parser.cpp"
     break;
 
   case 55: /* expression: OPEN_ROUND_BRACKET expression CLOSE_ROUND_BRACKET  */
-#line 284 "parser/parser.y"
+#line 327 "parser/parser.y"
                                                         {
         yyval = yyvsp[-1];
     }
-#line 2043 "parser/parser.cpp"
+#line 2088 "parser/parser.cpp"
     break;
 
   case 56: /* expression: reference IS type_indicator  */
-#line 287 "parser/parser.y"
+#line 330 "parser/parser.y"
                                   {
-        yyval = new Is(static_cast<Reference*>(yyvsp[-2]), static_cast<TypeNode*>(yyvsp[0])->type);
+        Is* is = new Is(static_cast<Reference*>(yyvsp[-2]), static_cast<TypeNode*>(yyvsp[0])->type);
+        is->loc = make_loc((yylsp[-2]));
+        yyval = is;
     }
-#line 2051 "parser/parser.cpp"
+#line 2098 "parser/parser.cpp"
     break;
 
   case 60: /* reference: reference OPEN_SQUARE_BRACKET expression CLOSE_SQUARE_BRACKET  */
-#line 296 "parser/parser.y"
+#line 341 "parser/parser.y"
                                                                     {
         yyval = add_suffix(yyvsp[-3], new ArrayIndexSuffix(expr(yyvsp[-1])));
     }
-#line 2059 "parser/parser.cpp"
+#line 2106 "parser/parser.cpp"
     break;
 
   case 61: /* reference: reference OPEN_ROUND_BRACKET opt_argument_list CLOSE_ROUND_BRACKET  */
-#line 299 "parser/parser.y"
+#line 344 "parser/parser.y"
                                                                          {
         yyval = add_suffix(yyvsp[-3], new CallSuffix(take<Expression>(yyvsp[-1])));
     }
-#line 2067 "parser/parser.cpp"
+#line 2114 "parser/parser.cpp"
     break;
 
   case 62: /* reference: reference DOT IDENTIFIER  */
-#line 302 "parser/parser.y"
+#line 347 "parser/parser.y"
                                {
         yyval = add_suffix(yyvsp[-2], new MemberSuffix(take_name(yyvsp[0])));
     }
-#line 2075 "parser/parser.cpp"
+#line 2122 "parser/parser.cpp"
     break;
 
   case 63: /* reference: reference DOT INT_LITERAL  */
-#line 305 "parser/parser.y"
+#line 350 "parser/parser.y"
                                 {
         yyval = add_suffix(yyvsp[-2], new TupleIndexSuffix(static_cast<IntLiteral*>(yyvsp[0])));
     }
-#line 2083 "parser/parser.cpp"
+#line 2130 "parser/parser.cpp"
     break;
 
   case 64: /* argument_list: expression  */
-#line 311 "parser/parser.y"
+#line 356 "parser/parser.y"
                {
         yyval = list_of(yyvsp[0]);
     }
-#line 2091 "parser/parser.cpp"
+#line 2138 "parser/parser.cpp"
     break;
 
   case 65: /* argument_list: argument_list COMMA expression  */
-#line 314 "parser/parser.y"
+#line 359 "parser/parser.y"
                                      {
         yyval = list_add(yyvsp[-2], yyvsp[0]);
     }
-#line 2099 "parser/parser.cpp"
+#line 2146 "parser/parser.cpp"
     break;
 
   case 66: /* opt_argument_list: %empty  */
-#line 320 "parser/parser.y"
+#line 365 "parser/parser.y"
            { yyval = new_list(); }
-#line 2105 "parser/parser.cpp"
+#line 2152 "parser/parser.cpp"
     break;
 
   case 68: /* type_indicator: INT  */
-#line 325 "parser/parser.y"
+#line 370 "parser/parser.y"
              { yyval = new TypeNode(VariableType::INT); }
-#line 2111 "parser/parser.cpp"
+#line 2158 "parser/parser.cpp"
     break;
 
   case 69: /* type_indicator: REAL  */
-#line 326 "parser/parser.y"
+#line 371 "parser/parser.y"
              { yyval = new TypeNode(VariableType::REAL); }
-#line 2117 "parser/parser.cpp"
+#line 2164 "parser/parser.cpp"
     break;
 
   case 70: /* type_indicator: BOOL  */
-#line 327 "parser/parser.y"
+#line 372 "parser/parser.y"
              { yyval = new TypeNode(VariableType::BOOL); }
-#line 2123 "parser/parser.cpp"
+#line 2170 "parser/parser.cpp"
     break;
 
   case 71: /* type_indicator: STRING  */
-#line 328 "parser/parser.y"
+#line 373 "parser/parser.y"
              { yyval = new TypeNode(VariableType::STRING); }
-#line 2129 "parser/parser.cpp"
+#line 2176 "parser/parser.cpp"
     break;
 
   case 72: /* type_indicator: NONE  */
-#line 329 "parser/parser.y"
+#line 374 "parser/parser.y"
              { yyval = new TypeNode(VariableType::NONE); }
-#line 2135 "parser/parser.cpp"
+#line 2182 "parser/parser.cpp"
     break;
 
   case 73: /* type_indicator: FUNC  */
-#line 330 "parser/parser.y"
+#line 375 "parser/parser.y"
              { yyval = new TypeNode(VariableType::FUNC); }
-#line 2141 "parser/parser.cpp"
+#line 2188 "parser/parser.cpp"
     break;
 
   case 74: /* type_indicator: OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET  */
-#line 331 "parser/parser.y"
+#line 376 "parser/parser.y"
                                                { yyval = new TypeNode(VariableType::ARRAY); }
-#line 2147 "parser/parser.cpp"
+#line 2194 "parser/parser.cpp"
     break;
 
   case 75: /* type_indicator: OPEN_BRACE CLOSE_BRACE  */
-#line 332 "parser/parser.y"
+#line 377 "parser/parser.y"
                                                { yyval = new TypeNode(VariableType::TUPLE); }
-#line 2153 "parser/parser.cpp"
+#line 2200 "parser/parser.cpp"
     break;
 
   case 85: /* array_literal: OPEN_SQUARE_BRACKET opt_argument_list CLOSE_SQUARE_BRACKET  */
-#line 348 "parser/parser.y"
+#line 393 "parser/parser.y"
                                                                {
-        yyval = new Array(take<Expression>(yyvsp[-1]));
+        Array* a = new Array(take<Expression>(yyvsp[-1]));
+        a->loc = make_loc((yylsp[-2]));
+        yyval = a;
     }
-#line 2161 "parser/parser.cpp"
+#line 2210 "parser/parser.cpp"
     break;
 
   case 86: /* tuple_literal: OPEN_BRACE opt_tuple_element_list CLOSE_BRACE  */
-#line 354 "parser/parser.y"
+#line 401 "parser/parser.y"
                                                   {
-        yyval = new Tuple(take<TupleElement>(yyvsp[-1]));
+        Tuple* t = new Tuple(take<TupleElement>(yyvsp[-1]));
+        t->loc = make_loc((yylsp[-2]));
+        yyval = t;
     }
-#line 2169 "parser/parser.cpp"
+#line 2220 "parser/parser.cpp"
     break;
 
   case 87: /* tuple_element_list: tuple_element  */
-#line 360 "parser/parser.y"
+#line 409 "parser/parser.y"
                   {
         yyval = list_of(yyvsp[0]);
     }
-#line 2177 "parser/parser.cpp"
+#line 2228 "parser/parser.cpp"
     break;
 
   case 88: /* tuple_element_list: tuple_element_list COMMA tuple_element  */
-#line 363 "parser/parser.y"
+#line 412 "parser/parser.y"
                                              {
         yyval = list_add(yyvsp[-2], yyvsp[0]);
     }
-#line 2185 "parser/parser.cpp"
+#line 2236 "parser/parser.cpp"
     break;
 
   case 89: /* opt_tuple_element_list: %empty  */
-#line 369 "parser/parser.y"
+#line 418 "parser/parser.y"
            { yyval = new_list(); }
-#line 2191 "parser/parser.cpp"
+#line 2242 "parser/parser.cpp"
     break;
 
   case 91: /* tuple_element: expression  */
-#line 374 "parser/parser.y"
+#line 423 "parser/parser.y"
                {
-        yyval = new TupleElement(expr(yyvsp[0]));
+        TupleElement* te = new TupleElement(expr(yyvsp[0]));
+        te->loc = make_loc((yylsp[0]));
+        yyval = te;
     }
-#line 2199 "parser/parser.cpp"
+#line 2252 "parser/parser.cpp"
     break;
 
   case 92: /* tuple_element: IDENTIFIER ASSIGN expression  */
-#line 377 "parser/parser.y"
+#line 428 "parser/parser.y"
                                    {
-        yyval = new TupleElement(expr(yyvsp[0]), take_name(yyvsp[-2]));
+        TupleElement* te = new TupleElement(expr(yyvsp[0]), take_name(yyvsp[-2]));
+        te->loc = make_loc((yylsp[-2]));
+        yyval = te;
     }
-#line 2207 "parser/parser.cpp"
+#line 2262 "parser/parser.cpp"
     break;
 
   case 93: /* function_literal: FUNC function_params function_body  */
-#line 383 "parser/parser.y"
+#line 436 "parser/parser.y"
                                        {
-        yyval = new FunctionLiteral(take_names(yyvsp[-1]), static_cast<FunctionBody*>(yyvsp[0]));
+        FunctionLiteral* f = new FunctionLiteral(take_names(yyvsp[-1]), static_cast<FunctionBody*>(yyvsp[0]));
+        f->loc = make_loc((yylsp[-2]));
+        yyval = f;
     }
-#line 2215 "parser/parser.cpp"
+#line 2272 "parser/parser.cpp"
     break;
 
   case 94: /* function_params: %empty  */
-#line 389 "parser/parser.y"
+#line 444 "parser/parser.y"
            { yyval = new_list(); }
-#line 2221 "parser/parser.cpp"
+#line 2278 "parser/parser.cpp"
     break;
 
   case 95: /* function_params: OPEN_ROUND_BRACKET CLOSE_ROUND_BRACKET  */
-#line 390 "parser/parser.y"
+#line 445 "parser/parser.y"
                                              {
         yyval = new_list();
     }
-#line 2229 "parser/parser.cpp"
+#line 2286 "parser/parser.cpp"
     break;
 
   case 96: /* function_params: OPEN_ROUND_BRACKET parameter_list CLOSE_ROUND_BRACKET  */
-#line 393 "parser/parser.y"
+#line 448 "parser/parser.y"
                                                             {
         yyval = yyvsp[-1];
     }
-#line 2237 "parser/parser.cpp"
+#line 2294 "parser/parser.cpp"
     break;
 
   case 97: /* parameter_list: IDENTIFIER  */
-#line 399 "parser/parser.y"
+#line 454 "parser/parser.y"
                {
         yyval = list_of(yyvsp[0]);
     }
-#line 2245 "parser/parser.cpp"
+#line 2302 "parser/parser.cpp"
     break;
 
   case 98: /* parameter_list: parameter_list COMMA IDENTIFIER  */
-#line 402 "parser/parser.y"
+#line 457 "parser/parser.y"
                                       {
         yyval = list_add(yyvsp[-2], yyvsp[0]);
     }
-#line 2253 "parser/parser.cpp"
+#line 2310 "parser/parser.cpp"
     break;
 
   case 99: /* function_body: opt_newlines IS body END  */
-#line 408 "parser/parser.y"
+#line 463 "parser/parser.y"
                              {
-        yyval = new BlockBody(take<Statement>(yyvsp[-1]));
+        BlockBody* b = new BlockBody(take<Statement>(yyvsp[-1]));
+        b->loc = make_loc((yylsp[-3]));
+        yyval = b;
     }
-#line 2261 "parser/parser.cpp"
+#line 2320 "parser/parser.cpp"
     break;
 
   case 100: /* function_body: ARROW expression  */
-#line 411 "parser/parser.y"
+#line 468 "parser/parser.y"
                                        {
-        yyval = new ShortFunctionBody(expr(yyvsp[0]));
+        ShortFunctionBody* b = new ShortFunctionBody(expr(yyvsp[0]));
+        b->loc = make_loc((yylsp[-1]));
+        yyval = b;
     }
-#line 2269 "parser/parser.cpp"
+#line 2330 "parser/parser.cpp"
     break;
 
   case 101: /* opt_newlines: %empty  */
-#line 417 "parser/parser.y"
+#line 476 "parser/parser.y"
            { yyval = nullptr; }
-#line 2275 "parser/parser.cpp"
+#line 2336 "parser/parser.cpp"
     break;
 
 
-#line 2279 "parser/parser.cpp"
+#line 2340 "parser/parser.cpp"
 
       default: break;
     }
@@ -2504,5 +2565,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 421 "parser/parser.y"
+#line 480 "parser/parser.y"
 
