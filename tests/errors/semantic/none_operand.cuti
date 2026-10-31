@@ -1,0 +1,4 @@
+print none + 1
+
+// Expected result: Semantic Error
+// Message: None cannot be used as an operand

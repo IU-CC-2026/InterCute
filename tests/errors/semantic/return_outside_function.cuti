@@ -1,0 +1,4 @@
+return 1
+
+// Expected result: Semantic Error
+// Message: Cannot use return outside a function

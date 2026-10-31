@@ -1,0 +1,4 @@
+print missing
+
+// Expected result: Semantic Error
+// Message: Identifier missing is not declared

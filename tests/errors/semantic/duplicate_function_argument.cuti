@@ -1,0 +1,4 @@
+var f := func(x, x) => x
+
+// Expected result: Semantic Error
+// Message: Duplicate function argument: x
