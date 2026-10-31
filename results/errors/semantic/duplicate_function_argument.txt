@@ -1,0 +1,1 @@
+Semantic error at line 1, column 10: Duplicate function argument: x

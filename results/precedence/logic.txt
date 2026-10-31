@@ -2,49 +2,13 @@ Program
 	statements:
 		Print
 			expressions:
-				BinaryExpression
-					operator: and
-					left:
-						BinaryExpression
-							operator: <
-							left:
-								IntLiteral: 1
-							right:
-								IntLiteral: 2
-					right:
-						BinaryExpression
-							operator: <
-							left:
-								IntLiteral: 2
-							right:
-								IntLiteral: 3
+				BoolLiteral: true
 		Print
 			expressions:
-				UnaryExpression
-					operator: not 
-					expression:
-						BinaryExpression
-							operator: >
-							left:
-								IntLiteral: 1
-							right:
-								IntLiteral: 2
+				BoolLiteral: true
 		Print
 			expressions:
-				BinaryExpression
-					operator: xor
-					left:
-						BoolLiteral: true
-					right:
-						BoolLiteral: false
+				BoolLiteral: true
 		Print
 			expressions:
-				BinaryExpression
-					operator: and
-					left:
-						UnaryExpression
-							operator: not 
-							expression:
-								BoolLiteral: true
-					right:
-						BoolLiteral: false
+				BoolLiteral: false

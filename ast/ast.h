@@ -365,3 +365,13 @@ public:
 
     std::string print(int level) override;
 };
+
+// created only by optimizer
+class Block : public Statement {
+public:
+    std::vector<Statement*> statements;
+
+    Block(std::vector<Statement*> statements);
+
+    std::string print(int level) override;
+};
