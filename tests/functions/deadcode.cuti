@@ -1,0 +1,14 @@
+var sum := func(a, b)
+    is
+        var c := a + b
+
+        return c;
+
+        print "Done"
+        
+        return c
+    end
+
+print sum(3, 6)
+
+// Expected result: 9
