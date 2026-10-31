@@ -1,0 +1,6 @@
+for item in 42 loop
+    print item
+end
+
+// Expected result: Semantic Error
+// Message: Non-iterable object
