@@ -1,7 +1,10 @@
 #include "lexer.h"
 
+// to read the program sequantially, lexer contains the information about its current position.
+// lexer understands , which  reading function to call by analysing the current symbol.
 
 Lexer::Lexer(const std::string& src_code) {
+    // pos begins with 0, as the index of the C++ string, but coordinates for the person start with 1.
     this->pos = 0;
     this->line = 1;
     this->column = 1;
@@ -65,7 +68,9 @@ Lexer::Lexer(const std::string& src_code) {
     };
 }
 
+// searches and returns one next token.
 Token Lexer::get_token() {
+    // we are using loop because before token there may be located spaces and comments. We need to go through them, before we will be able to return something.
     while (pos < src_code.size()) {
         // Ignore whitespaces and tabs
         if (src_code[pos] == ' ' || src_code[pos] == '\t') {
@@ -111,6 +116,7 @@ Token Lexer::get_token() {
         if ((src_code[pos] >= 'a' && src_code[pos] <= 'z') 
             || (src_code[pos] >= 'A' && src_code[pos] <= 'Z') 
             || src_code[pos] == '_') {
+            // when the token is recognised, e.g. identifier, we read the whole word and create the token. The next calling will start reading from the saved position.
             return remember_token(read_identifier(column));
         }
 
@@ -183,14 +189,17 @@ Token Lexer::read_identifier(unsigned int start_column) {
             || (src_code[pos] >= 'A' && src_code[pos] <= 'Z') 
             || std::isdigit(src_code[pos]) 
             || src_code[pos] == '_')) {
+        // when reading each valid character, the following is performed.
         token_value += src_code[pos];
         pos++;
         column++;
     }
 
+    // if there is such key in the dictionary of the correspondence(keywords contains "var", "if", "print" keys), then we return its appropriate TokenType::...
     if (keywords.find(token_value) != keywords.end())
         return Token{keywords[token_value], token_value, line, start_column};
 
+    // otherwise, we return the token, whose type corresponds to identifier. We need start_column to save the place of the token beginning.
     return Token{TokenType::IDENTIFIER, token_value, line, start_column};
 }
 
