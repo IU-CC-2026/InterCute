@@ -1,0 +1,2 @@
+Semantic error at line 1, column 13: Invalid type of range boundary
+StringLiteral: "three"
