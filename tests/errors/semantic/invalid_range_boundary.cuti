@@ -1,0 +1,6 @@
+for i in 1.."three" loop
+    print i
+end
+
+// Expected result: Semantic Error
+// Message: Invalid type of range boundary

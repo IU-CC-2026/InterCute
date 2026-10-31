@@ -1,0 +1,5 @@
+var x := 1
+var x := 2
+
+// Expected result: Semantic Error
+// Message: Two declarations of the same variable: x

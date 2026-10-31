@@ -1,0 +1,4 @@
+exit
+
+// Expected result: Semantic Error
+// Message: Cannot use exit outside a loop
