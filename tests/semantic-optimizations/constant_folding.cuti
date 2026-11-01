@@ -1,0 +1,23 @@
+print (2 + 3) * 4 - 6 / 2
+print 1 + 2.5
+print 3 < 5
+print (not false) and (true xor false)
+print -(2 + 3)
+print "hel" + "lo"
+print [1, 2] + [3]
+print {a := 1} + {b := 2}
+print -5 / 2
+
+/* Expected optimized expressions, in print order:
+1. IntLiteral: 17
+2. RealLiteral: 3.5
+3. BoolLiteral: true
+4. BoolLiteral: true
+5. IntLiteral: -5
+6. StringLiteral: "hello"
+7. Array with IntLiteral values 1, 2, 3
+8. Tuple with named IntLiteral elements a := 1, b := 2
+9. IntLiteral: -3
+
+Integer division rounds down according to Project D, page 6.
+*/
