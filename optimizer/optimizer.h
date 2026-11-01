@@ -32,6 +32,8 @@ private:
     void collect_used_names_statement(Statement* statement);
     void collect_used_names_expression(Expression* expression);
     void collect_used_names_reference(Reference* reference);
+    bool has_function_call(Expression* expression); // function calls may have side effects, do not remove them
+    bool has_function_call(Reference* reference);
     void remove_unused_statement(Statement*& statement);
     void remove_unused_expression(Expression*& expression);
     void remove_unused_reference(Reference* reference);

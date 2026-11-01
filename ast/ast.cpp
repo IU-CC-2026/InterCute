@@ -100,7 +100,7 @@ StringLiteral::StringLiteral(std::string value) : value(value) {}
 std::string StringLiteral::print(int level) {
     std::string pad(level, '\t');
 
-    return pad + "StringLiteral: " + value;
+    return pad + "StringLiteral: \"" + value + "\"";
 }
 
 
