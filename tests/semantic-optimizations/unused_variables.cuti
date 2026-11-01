@@ -1,0 +1,22 @@
+var kept := 10, unused_number := 20
+var unused_text := "unused"
+
+var make_value := func() is
+    print "initializer ran"
+    return 7
+end
+
+var unused_result := make_value()
+print kept
+
+/* Expected optimization:
+Remove unused_number and unused_text, whose initializers have no side effects.
+Keep kept and print kept.
+Preserve the make_value() call even though unused_result is never read:
+the function prints "initializer ran", so deleting the call changes program behavior.
+Keeping the entire unused_result declaration is a valid way to preserve the call.
+
+Expected output when program execution is implemented:
+initializer ran
+10
+*/
