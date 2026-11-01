@@ -1,0 +1,5 @@
+Program
+	statements:
+		Print
+			expressions:
+				StringLiteral: "Not used"

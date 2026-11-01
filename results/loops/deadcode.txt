@@ -1,0 +1,12 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: counter
+					expression:
+						IntLiteral: 0
+		Print
+			expressions:
+				Reference
+					identifier: counter

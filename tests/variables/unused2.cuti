@@ -1,0 +1,5 @@
+var a, b, c;
+
+print "Not used"
+
+// Expected result: Not used

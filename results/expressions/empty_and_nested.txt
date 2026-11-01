@@ -1,19 +1,5 @@
 Program
 	statements:
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: e
-					expression:
-						Array
-							items: []
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: tup
-					expression:
-						Tuple
-							items: []
 		Print
 			expressions:
 				IntLiteral: 1

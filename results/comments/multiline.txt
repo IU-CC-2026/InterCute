@@ -5,12 +5,7 @@ Program
 				VariableDefinition
 					identifier: x
 					expression:
-						BinaryExpression
-							operator: +
-							left:
-								IntLiteral: 10
-							right:
-								IntLiteral: 5
+						IntLiteral: 15
 		Print
 			expressions:
 				Reference

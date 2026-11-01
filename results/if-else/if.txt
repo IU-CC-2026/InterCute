@@ -5,10 +5,7 @@ Program
 				VariableDefinition
 					identifier: x
 					expression:
-						UnaryExpression
-							operator: -
-							expression:
-								IntLiteral: 4
+						IntLiteral: -4
 		Declaration
 			definitions:
 				VariableDefinition

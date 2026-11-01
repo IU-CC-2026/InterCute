@@ -1,0 +1,9 @@
+var counter := 0;
+
+while false loop
+    counter := counter + 1;
+end
+
+print counter;
+
+// Expected result: 0

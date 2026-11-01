@@ -1,0 +1,1 @@
+Semantic error at line 1, column 7: Identifier missing is not declared

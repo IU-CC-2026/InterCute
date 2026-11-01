@@ -1,0 +1,40 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: sum
+					expression:
+						FunctionLiteral
+							arguments:
+								a
+								b
+							body:
+								BlockBody
+									statements:
+										Declaration
+											definitions:
+												VariableDefinition
+													identifier: c
+													expression:
+														BinaryExpression
+															operator: +
+															left:
+																Reference
+																	identifier: a
+															right:
+																Reference
+																	identifier: b
+										Return
+											result:
+												Reference
+													identifier: c
+		Print
+			expressions:
+				Reference
+					identifier: sum
+					suffixes:
+						CallSuffix
+							arguments:
+								IntLiteral: 3
+								IntLiteral: 6

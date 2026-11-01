@@ -50,10 +50,7 @@ Program
 								IntLiteral: 1
 								IntLiteral: 10
 								IntLiteral: 8
-								UnaryExpression
-									operator: -
-									expression:
-										IntLiteral: 5
+								IntLiteral: -5
 		Print
 			expressions:
 				Reference

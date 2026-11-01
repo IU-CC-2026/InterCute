@@ -565,3 +565,21 @@ std::string Assignment::print(int level) {
 
     return result;
 }
+
+Block::Block(std::vector<Statement*> statements) : statements(statements) {}
+
+std::string Block::print(int level) {
+    std::string pad(level, '\t');
+
+    std::string result = pad + "Block\n";
+    result += pad + "\tstatements:";
+
+    if (statements.empty()) result += " []";
+    else {
+        for (int i = 0; i < statements.size(); i++) {
+            result += '\n' + statements[i]->print(level + 2);
+        }
+    }
+
+    return result;
+}
