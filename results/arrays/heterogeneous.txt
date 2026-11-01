@@ -8,7 +8,7 @@ Program
 						Array
 							items:
 								StringLiteral: "a"
-								StringLiteral: 'b'
+								StringLiteral: "b"
 								IntLiteral: 10
 								StringLiteral: "hello"
 								RealLiteral: 1.500000

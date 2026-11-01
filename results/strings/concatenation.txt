@@ -5,7 +5,7 @@ Program
 				VariableDefinition
 					identifier: s1
 					expression:
-						StringLiteral: 'good'
+						StringLiteral: "good"
 		Declaration
 			definitions:
 				VariableDefinition

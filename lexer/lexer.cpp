@@ -240,8 +240,8 @@ Token Lexer::read_number(unsigned int start_column) {
 }
 
 Token Lexer::read_string(unsigned int start_column) {
+    char quote = src_code[pos];
     std::string token_value = "";
-    token_value += src_code[pos];
     pos++;
     column++;
 
@@ -250,8 +250,7 @@ Token Lexer::read_string(unsigned int start_column) {
             throw SyntaxError(line, column, "Invalid string");
         }
 
-        if (src_code[pos] == token_value[0]) {
-            token_value += src_code[pos];
+        if (src_code[pos] == quote) {
             pos++;
             column++;
 
