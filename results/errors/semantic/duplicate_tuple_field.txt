@@ -1,1 +1,1 @@
-Semantic error at line 1, column 19: Duplicate tuple element name: a
+Semantic error at line 2, column 19: Duplicate tuple element name: a

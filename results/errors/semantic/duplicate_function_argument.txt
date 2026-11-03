@@ -1,1 +1,1 @@
-Semantic error at line 1, column 10: Duplicate function argument: x
+Semantic error at line 2, column 10: Duplicate function argument: x
