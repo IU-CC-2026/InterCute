@@ -44,7 +44,7 @@ Program
 				Reference
 					identifier: x
 			expression:
-				StringLiteral: 'hi'
+				StringLiteral: "hi"
 		Print
 			expressions:
 				Is

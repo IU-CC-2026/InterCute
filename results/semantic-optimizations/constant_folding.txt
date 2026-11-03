@@ -1,0 +1,42 @@
+Program
+	statements:
+		Print
+			expressions:
+				IntLiteral: 17
+		Print
+			expressions:
+				RealLiteral: 3.500000
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				IntLiteral: -5
+		Print
+			expressions:
+				StringLiteral: "hello"
+		Print
+			expressions:
+				Array
+					items:
+						IntLiteral: 1
+						IntLiteral: 2
+						IntLiteral: 3
+		Print
+			expressions:
+				Tuple
+					items:
+						TupleElement
+							identifier: a
+							expression:
+								IntLiteral: 1
+						TupleElement
+							identifier: b
+							expression:
+								IntLiteral: 2
+		Print
+			expressions:
+				IntLiteral: -2

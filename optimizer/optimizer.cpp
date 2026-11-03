@@ -771,6 +771,63 @@ void Optimizer::collect_used_names_reference(Reference* reference) {
 }
 
 
+bool Optimizer::has_function_call(Expression* expression) {
+    if (expression == nullptr) return false;
+
+    if (auto* bin_expr = dynamic_cast<BinaryExpression*>(expression)) {
+        return this->has_function_call(bin_expr->left) || this->has_function_call(bin_expr->right);
+    } else if (auto* unary_expr = dynamic_cast<UnaryExpression*>(expression)) {
+        return this->has_function_call(unary_expr->expr);
+    } else if (auto* ref = dynamic_cast<Reference*>(expression)) {
+        return this->has_function_call(ref);
+    } else if (auto* is = dynamic_cast<Is*>(expression)) {
+        return this->has_function_call(is->ref);
+    } else if (auto* array = dynamic_cast<Array*>(expression)) {
+        bool has_func_call = false;
+        for (Expression* expr : array->items) {
+            if (this->has_function_call(expr)) {
+                has_func_call = true;
+                break;
+            }
+        }
+
+        return has_func_call;
+    } else if (auto* tuple = dynamic_cast<Tuple*>(expression)) {
+        bool has_func_call = false;
+        for (TupleElement* tuple_el : tuple->items) {
+            if (tuple_el == nullptr) continue;
+
+            if (this->has_function_call(tuple_el->expr)) {
+                has_func_call = true;
+                break;
+            }
+        }
+
+        return has_func_call;
+    }
+
+    return false;
+}
+
+
+bool Optimizer::has_function_call(Reference* reference) {
+    if (reference == nullptr) return false;
+
+    for (ReferenceSuffix* suffix : reference->suffixes) {
+        if (dynamic_cast<CallSuffix*>(suffix)) {
+            return true;
+        }
+
+        if (auto* array_idx = dynamic_cast<ArrayIndexSuffix*>(suffix)) {
+            if (this->has_function_call(array_idx->index))
+                return true;
+        }
+    }
+
+    return false;
+}
+
+
 void Optimizer::remove_unused_statement(Statement*& statement) {
     if (statement == nullptr) return;
 
@@ -780,7 +837,7 @@ void Optimizer::remove_unused_statement(Statement*& statement) {
         for (VariableDefinition* vardef : declaration->definitions) {
             if (vardef == nullptr) continue;
 
-            if (this->used_names.find(vardef->identifier) != this->used_names.end()) {
+            if (this->used_names.find(vardef->identifier) != this->used_names.end() || has_function_call(vardef->expr)) {
                 remaining.push_back(vardef);
                 this->remove_unused_expression(vardef->expr);
             } else {
