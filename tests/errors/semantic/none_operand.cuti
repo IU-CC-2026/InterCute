@@ -1,3 +1,4 @@
+// Checks that an explicit none literal cannot be used in addition.
 print none + 1
 
 // Expected result: Semantic Error

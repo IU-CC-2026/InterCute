@@ -77,31 +77,32 @@ enum class TokenType {
 };
 
 
+// representation of the fragment of the text for further process.
 struct Token {
-    TokenType type;
-    std::string value;
+    TokenType type; // tells what was encountered: e.g., name, number, operator and so on.
+    std::string value; // stores textual value.
 
     unsigned int line;
-    unsigned int column;
+    unsigned int column; // line and column point to the position of the original program.
 };
 
 
 class Lexer {
 public:
-    unsigned int pos;
-    unsigned int line;
-    unsigned int column;
+    unsigned int pos; // index of the current symbol inside src-code.
+    unsigned int line; // number of the current string.
+    unsigned int column; // number of the current position in the string.
 
-    std::string src_code;
+    std::string src_code; // contains the whole source code of the program
     TokenType previous_token_type;
 
     std::unordered_map<std::string, TokenType> keywords;
     std::unordered_map<char, TokenType> delimiters;
     std::unordered_map<std::string, TokenType> operators;
 
-    Lexer(const std::string& src_code);
+    Lexer(const std::string& src_code); 
 
-    Token get_token();
+    Token get_token(); // returns next token. E.g., in var x := 2 + 3 * 4 it does not calculate 2 + 3 * 4 and doesn't check, whether the variable x was declared earlier.
 
     Token remember_token(Token token);
 

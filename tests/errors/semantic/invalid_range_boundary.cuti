@@ -1,3 +1,4 @@
+// Checks that a string literal is rejected as a range boundary.
 for i in 1.."three" loop
     print i
 end

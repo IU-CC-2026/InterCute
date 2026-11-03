@@ -51,17 +51,19 @@ int main() {
 
 
         try {
-            Lexer lexer(source);
-            set_lexer(&lexer);
+            Lexer lexer(source); // create an object which will read the original text.
+            set_lexer(&lexer); // transfer to adapter address of the object
 
             std::string parser_error;
-            Program* root = nullptr;
-            int parse_result = yyparse(root, parser_error);
+            Program* root = nullptr; // intended for the pointer to the root of AST.
+            int parse_result = yyparse(root, parser_error); // launches Bison-parser. While working it asks for tokens through yylex() from adapter.
 
             if (parse_result == 0 && root != nullptr) {
-                SemanticAnalyzer analyzer;
-                std::vector<SemanticError> errors = analyzer.analyze(root);
+                // after a successful analysis, the analyzer traverses the tree and returns found mistakes.
+                SemanticAnalyzer analyzer; 
+                std::vector<SemanticError> errors = analyzer.analyze(root); 
 
+                // if there are no mistakes, optimiser changes the tree, after that its textual representation is written to the result file.
                 if (errors.empty()) {
                     Optimizer optimizer;
                     optimizer.optimize(root);

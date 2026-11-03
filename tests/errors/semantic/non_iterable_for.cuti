@@ -1,3 +1,4 @@
+// Checks that an integer literal is rejected as a collection to iterate over.
 for item in 42 loop
     print item
 end

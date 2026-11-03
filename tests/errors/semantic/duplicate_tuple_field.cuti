@@ -1,3 +1,4 @@
+// Checks that named fields within one tuple must be unique.
 var t := {a := 1, a := 2}
 
 // Expected result: Semantic Error

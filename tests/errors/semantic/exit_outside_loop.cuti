@@ -1,3 +1,4 @@
+// Checks that exit is rejected outside a loop.
 exit
 
 // Expected result: Semantic Error

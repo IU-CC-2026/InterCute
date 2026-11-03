@@ -56,9 +56,9 @@ class Statement : public ASTNode {};
 // Expressions
 class BinaryExpression : public Expression {
 public:
-    Expression* left;
-    Expression* right;
-    BinaryOperator op;
+    Expression* left; // pointer to the left expression.
+    Expression* right; // pointer to the right expression.
+    BinaryOperator op; // operation designation.
 
     BinaryExpression(Expression* left, Expression* right, BinaryOperator op);
 
