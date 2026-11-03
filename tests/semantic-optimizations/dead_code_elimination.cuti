@@ -20,12 +20,7 @@ loop
     print "dead-exit"
 end
 
-/* Expected optimization:
-Remove the false if branch, the while false loop, and statements after return and exit.
-Keep the print of "kept", return 7, the call to f(), and the loop's exit.
-No "dead-if", "dead-while", "dead-return", or "dead-exit" literals should remain in the AST.
-
-Expected output when program execution is implemented:
+/* Expected output:
 kept
 7
 */
