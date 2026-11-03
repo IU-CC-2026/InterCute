@@ -216,6 +216,7 @@ Token Lexer::read_number(unsigned int start_column) {
         return Token{TokenType::INT_LITERAL, token_value, line, start_column};
 
     } else {
+        // tells whether we have encountered a decimal point
         bool found_dot = false;
 
         while (pos < src_code.size() && (std::isdigit(src_code[pos]) 

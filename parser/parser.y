@@ -1,4 +1,6 @@
 %{
+// Defines grammar rules and C++ actions, which create AST when recognising language structures.
+// Bison uses it to generate parser.cpp and parser.hpp.
 #include "../ast/ast.h"
 
 #include <string>
@@ -7,27 +9,34 @@
 int yylex();
 void yyerror(Program*& root, std::string& error, const char* s);
 
+// Temporarily collects nodes during list parsing.
+// Its elements are later passed to the AST node that needs them.
 struct NodeList : ASTNode {
     std::vector<ASTNode*> items;
     std::string print(int level) override { return ""; }
 };
 
+// Designates the type of value that the program wants to check
 struct TypeNode : ASTNode {
     VariableType type;
     explicit TypeNode(VariableType type) : type(type) {}
     std::string print(int level) override { return ""; }
 };
 
+// Creates an empty temporary list
 static NodeList* new_list() {
     return new NodeList();
 }
 
+
+// Creates a temprorary list that containing its first node.
 static NodeList* list_of(ASTNode* node) {
     NodeList* list = new NodeList();
     list->items.push_back(node);
     return list;
 }
 
+// It adds another node to the existing temporary list and returns the same list.
 static NodeList* list_add(ASTNode* list, ASTNode* node) {
     NodeList* l = static_cast<NodeList*>(list);
     l->items.push_back(node);
@@ -35,6 +44,8 @@ static NodeList* list_add(ASTNode* list, ASTNode* node) {
 }
 
 template <class T>
+// It extracts pointers of the required type and deletes the temporary list.
+// Returns the list of nodes of the required type for the resulting AST.
 static std::vector<T*> take(ASTNode* list) {
     NodeList* l = static_cast<NodeList*>(list);
     std::vector<T*> result;

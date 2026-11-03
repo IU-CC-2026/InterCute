@@ -1,3 +1,4 @@
+// checks that using a name without a visible declaration is rejected.
 print missing
 
 // Expected result: Semantic Error

@@ -1,3 +1,4 @@
+// checks that two declarations cannot use the same name in one scope.
 var x := 1
 var x := 2
 

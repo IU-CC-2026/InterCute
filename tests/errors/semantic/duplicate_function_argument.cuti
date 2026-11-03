@@ -1,3 +1,4 @@
+// Checks that function parameters must have unique names.
 var f := func(x, x) => x
 
 // Expected result: Semantic Error
