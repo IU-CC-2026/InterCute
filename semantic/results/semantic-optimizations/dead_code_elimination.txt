@@ -1,0 +1,30 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: f
+					expression:
+						FunctionLiteral
+							arguments: []
+							body:
+								BlockBody
+									statements:
+										Block
+											statements:
+												Print
+													expressions:
+														StringLiteral: "kept"
+										Return
+											result:
+												IntLiteral: 7
+		Print
+			expressions:
+				Reference
+					identifier: f
+					suffixes:
+						CallSuffix
+							arguments: []
+		InfiniteLoop
+			body:
+				Exit

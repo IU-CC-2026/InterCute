@@ -1,8 +1,8 @@
 #include "lexer/lexer.h"
 #include "parser/adapter.h"
 #include "parser/parser.hpp"
-#include "semantic/semantic_analyzer.h"
-#include "optimizer/optimizer.h"
+#include "semantic/analyzer/semantic_analyzer.h"
+#include "semantic/optimizer/optimizer.h"
 
 #include <iostream>
 #include <fstream>

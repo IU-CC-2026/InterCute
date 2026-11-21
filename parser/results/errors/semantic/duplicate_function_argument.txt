@@ -1,0 +1,15 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: f
+					expression:
+						FunctionLiteral
+							arguments:
+								x
+								x
+							body:
+								ShortFunctionBody
+									Reference
+										identifier: x

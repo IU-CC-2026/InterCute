@@ -1,0 +1,20 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+					expression:
+						IntLiteral: 1
+				VariableDefinition
+					identifier: y
+					expression:
+						IntLiteral: 2
+				VariableDefinition
+					identifier: z
+					expression:
+						IntLiteral: 3
+		Print
+			expressions:
+				Reference
+					identifier: y

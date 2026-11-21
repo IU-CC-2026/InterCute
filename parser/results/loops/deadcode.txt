@@ -1,0 +1,28 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: counter
+					expression:
+						IntLiteral: 0
+		WhileLoop
+			condition:
+				BoolLiteral: false
+			body:
+				Assignment
+					reference:
+						Reference
+							identifier: counter
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								Reference
+									identifier: counter
+							right:
+								IntLiteral: 1
+		Print
+			expressions:
+				Reference
+					identifier: counter

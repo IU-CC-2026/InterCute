@@ -1,0 +1,7 @@
+NEWLINE(\n)
+EXIT(exit)
+NEWLINE(\n)
+NEWLINE(\n)
+NEWLINE(\n)
+NEWLINE(\n)
+END_OF_FILE(EOF)

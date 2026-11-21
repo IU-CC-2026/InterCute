@@ -1,0 +1,19 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items: []
+		ForEachLoop
+			identifier: x
+			expr:
+				Reference
+					identifier: arr
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: x

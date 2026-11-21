@@ -40,7 +40,7 @@ Program
 																					expression:
 																						IntLiteral: 28
 																TupleElement
-																	identifier: b
+																	identifier: c
 																	expression:
 																		IntLiteral: 6
 												TupleElement
