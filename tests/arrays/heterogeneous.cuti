@@ -12,3 +12,5 @@ hello
 1.5
 true
 */
+
+// Order does not matter for arrays with keys

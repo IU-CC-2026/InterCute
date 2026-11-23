@@ -1,8 +1,1 @@
-Program
-	statements:
-		InfiniteLoop
-			body:
-				Print
-					expressions:
-						StringLiteral: "stop"
-				Exit
+stop

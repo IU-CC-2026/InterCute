@@ -1,8 +1,1 @@
-Program
-	statements:
-		InfiniteLoop
-			body:
-				Print
-					expressions:
-						StringLiteral: "Hello World!"
-				Exit
+Hello World!

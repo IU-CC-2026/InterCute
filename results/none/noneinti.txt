@@ -1,12 +1,1 @@
-Program
-	statements:
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: x
-					expression:
-						NoneLiteral: none
-		Print
-			expressions:
-				Reference
-					identifier: x
+none

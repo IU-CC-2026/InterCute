@@ -8,6 +8,7 @@ g++ main.cpp lexer/lexer.cpp ast/ast.cpp \
     parser/adapter.cpp parser/parser.cpp \
     semantic/analyzer/semantic_analyzer.cpp \
     semantic/optimizer/optimizer.cpp \
+    interpreter/interpreter.cpp \
     -o cute_compiler || exit 1
 
 ./cute_compiler

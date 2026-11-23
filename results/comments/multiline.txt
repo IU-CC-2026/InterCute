@@ -1,12 +1,1 @@
-Program
-	statements:
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: x
-					expression:
-						IntLiteral: 15
-		Print
-			expressions:
-				Reference
-					identifier: x
+15

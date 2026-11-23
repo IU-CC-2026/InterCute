@@ -1,12 +1,1 @@
-Program
-	statements:
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: s
-					expression:
-						StringLiteral: "hello"
-		Print
-			expressions:
-				Reference
-					identifier: s
+hello

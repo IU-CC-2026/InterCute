@@ -3,6 +3,7 @@
 #include "parser/parser.hpp"
 #include "semantic/analyzer/semantic_analyzer.h"
 #include "semantic/optimizer/optimizer.h"
+#include "interpreter/interpreter.h"
 
 #include <iostream>
 #include <fstream>
@@ -49,6 +50,7 @@ int main() {
             continue;
         }
 
+        std::streambuf* old_cout = std::cout.rdbuf(result.rdbuf());
 
         try {
             Lexer lexer(source); // create an object which will read the original text.
@@ -68,7 +70,10 @@ int main() {
                     Optimizer optimizer;
                     optimizer.optimize(root);
 
-                    result << root->print(0) << '\n';
+                    std::cout.rdbuf(result.rdbuf());
+
+                    Interpreter interpreter;
+                    interpreter.interpret(root);
                 } else {
                     for (const SemanticError& error : errors) {
                         result << error.what() << '\n';
@@ -78,8 +83,10 @@ int main() {
                 result << (parser_error.empty() ? "Parser Error" : parser_error) << '\n';
             }
 
+            std::cout.rdbuf(old_cout);
             delete root;
         } catch (const std::exception& e) {
+            std::cout.rdbuf(old_cout);
             result << e.what() << std::endl;
         }
 

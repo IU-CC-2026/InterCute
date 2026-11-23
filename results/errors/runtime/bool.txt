@@ -1,10 +1,1 @@
-Program
-	statements:
-		Print
-			expressions:
-				BinaryExpression
-					operator: and
-					left:
-						IntLiteral: 10
-					right:
-						BoolLiteral: true
+Runtime error at line 1, column 7: Unsupported binary operator 'and' for 'int' and 'bool'
