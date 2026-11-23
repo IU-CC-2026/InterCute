@@ -1,0 +1,10 @@
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						NoneLiteral: none
+					right:
+						IntLiteral: 1

@@ -1,0 +1,14 @@
+Program
+	statements:
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				BoolLiteral: false

@@ -17,5 +17,5 @@ print -5 / 2
 6. StringLiteral: "hello"
 7. Array with IntLiteral values 1, 2, 3
 8. Tuple with named IntLiteral elements a := 1, b := 2
-9. IntLiteral: -3
+9. IntLiteral: -2
 */

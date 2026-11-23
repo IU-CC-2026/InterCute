@@ -1,17 +1,1 @@
-Program
-	statements:
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: s
-					expression:
-						StringLiteral: "hello"
-		Print
-			expressions:
-				BinaryExpression
-					operator: -
-					left:
-						Reference
-							identifier: s
-					right:
-						StringLiteral: "o"
+Runtime error at line 3, column 7: Unsupported binary operator '-' for 'string' and 'string'

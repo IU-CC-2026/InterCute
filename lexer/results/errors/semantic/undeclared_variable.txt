@@ -1,0 +1,8 @@
+NEWLINE(\n)
+PRINT(print)
+IDENTIFIER(missing)
+NEWLINE(\n)
+NEWLINE(\n)
+NEWLINE(\n)
+NEWLINE(\n)
+END_OF_FILE(EOF)

@@ -1,0 +1,121 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: f
+					expression:
+						FunctionLiteral
+							arguments:
+								x
+							body:
+								ShortFunctionBody
+									FunctionLiteral
+										arguments:
+											y
+										body:
+											ShortFunctionBody
+												BinaryExpression
+													operator: +
+													left:
+														Reference
+															identifier: x
+													right:
+														Reference
+															identifier: y
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: arr
+					expression:
+						Array
+							items:
+								Array
+									items:
+										IntLiteral: 1
+										IntLiteral: 2
+								Array
+									items:
+										IntLiteral: 3
+										IntLiteral: 4
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: t
+					expression:
+						Tuple
+							items:
+								TupleElement
+									identifier: a
+									expression:
+										Tuple
+											items:
+												TupleElement
+													identifier: b
+													expression:
+														Array
+															items:
+																IntLiteral: 10
+																IntLiteral: 20
+		Print
+			expressions:
+				Reference
+					identifier: f
+					suffixes:
+						CallSuffix
+							arguments:
+								IntLiteral: 1
+						CallSuffix
+							arguments:
+								IntLiteral: 2
+		Print
+			expressions:
+				Reference
+					identifier: arr
+					suffixes:
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 2
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 1
+		Print
+			expressions:
+				Reference
+					identifier: t
+					suffixes:
+						MemberSuffix
+							identifier: a
+						MemberSuffix
+							identifier: b
+						ArrayIndexSuffix
+							index:
+								IntLiteral: 2
+		Print
+			expressions:
+				Reference
+					identifier: f
+					suffixes:
+						CallSuffix
+							arguments:
+								Reference
+									identifier: arr
+									suffixes:
+										ArrayIndexSuffix
+											index:
+												IntLiteral: 1
+										ArrayIndexSuffix
+											index:
+												IntLiteral: 2
+						CallSuffix
+							arguments:
+								Reference
+									identifier: t
+									suffixes:
+										MemberSuffix
+											identifier: a
+										MemberSuffix
+											identifier: b
+										ArrayIndexSuffix
+											index:
+												IntLiteral: 1

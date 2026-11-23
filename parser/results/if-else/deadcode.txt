@@ -1,0 +1,13 @@
+Program
+	statements:
+		If
+			condition:
+				BoolLiteral: true
+			then:
+				Print
+					expressions:
+						IntLiteral: 5
+			else:
+				Print
+					expressions:
+						IntLiteral: 6

@@ -1,0 +1,7 @@
+Program
+	statements:
+		Block
+			statements:
+				Print
+					expressions:
+						IntLiteral: 5

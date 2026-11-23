@@ -1,0 +1,23 @@
+Program
+	statements:
+		Print
+			expressions:
+				IntLiteral: 5
+		Print
+			expressions:
+				IntLiteral: 2
+		Print
+			expressions:
+				IntLiteral: 14
+		Print
+			expressions:
+				IntLiteral: 20
+		Print
+			expressions:
+				IntLiteral: 26
+		Print
+			expressions:
+				IntLiteral: -6
+		Print
+			expressions:
+				IntLiteral: -5

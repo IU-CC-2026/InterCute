@@ -1,0 +1,10 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: x
+		Print
+			expressions:
+				Reference
+					identifier: x

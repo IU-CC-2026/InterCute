@@ -1,0 +1,11 @@
+Program
+	statements:
+		ForEachLoop
+			identifier: item
+			expr:
+				IntLiteral: 42
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: item

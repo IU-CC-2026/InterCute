@@ -1,7 +1,7 @@
 LOOP(loop)
 NEWLINE(\n)
 PRINT(print)
-STRING_LITERAL("Hello World!")
+STRING_LITERAL(Hello World!)
 NEWLINE(\n)
 EXIT(exit)
 NEWLINE(\n)

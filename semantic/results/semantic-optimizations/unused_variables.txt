@@ -1,0 +1,38 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: kept
+					expression:
+						IntLiteral: 10
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: make_value
+					expression:
+						FunctionLiteral
+							arguments: []
+							body:
+								BlockBody
+									statements:
+										Print
+											expressions:
+												StringLiteral: "initializer ran"
+										Return
+											result:
+												IntLiteral: 7
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: unused_result
+					expression:
+						Reference
+							identifier: make_value
+							suffixes:
+								CallSuffix
+									arguments: []
+		Print
+			expressions:
+				Reference
+					identifier: kept

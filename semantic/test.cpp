@@ -1,0 +1,90 @@
+#include "../lexer/lexer.h"
+#include "../parser/adapter.h"
+#include "../parser/parser.hpp"
+#include "analyzer/semantic_analyzer.h"
+#include "optimizer/optimizer.h"
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
+
+
+namespace fs = std::filesystem;
+
+
+int main() {
+    fs::path tests_dir = "tests";
+    fs::path results_dir = "semantic/results";
+
+    // recursively iterate through all subdirectories and files
+    for (const auto& entry : fs::recursive_directory_iterator(tests_dir)) {
+        if (!entry.is_regular_file() || entry.path().extension() != ".cuti") {
+            continue;
+        }
+
+
+        // construct path for file with test results
+        fs::path relative_path = fs::relative(entry.path(), tests_dir);
+        fs::path result_path = results_dir / relative_path;
+        result_path.replace_extension(".txt");
+        fs::create_directories(result_path.parent_path());
+
+
+        std::ifstream file(entry.path());
+        if (!file.is_open()) {
+            std::cerr << "Failed to open: " << entry.path() << std::endl;
+            continue;
+        }
+
+
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string source = buffer.str();
+
+
+        std::ofstream result(result_path);
+        if (!result.is_open()) {
+            std::cerr << "Failed to create: " << result_path << std::endl;
+            continue;
+        }
+
+
+        try {
+            Lexer lexer(source); // create an object which will read the original text.
+            set_lexer(&lexer); // transfer to adapter address of the object
+
+            std::string parser_error;
+            Program* root = nullptr; // intended for the pointer to the root of AST.
+            int parse_result = yyparse(root, parser_error); // launches Bison-parser. While working it asks for tokens through yylex() from adapter.
+
+            if (parse_result == 0 && root != nullptr) {
+                // after a successful analysis, the analyzer traverses the tree and returns found mistakes.
+                SemanticAnalyzer analyzer; 
+                std::vector<SemanticError> errors = analyzer.analyze(root); 
+
+                // if there are no mistakes, optimiser changes the tree, after that its textual representation is written to the result file.
+                if (errors.empty()) {
+                    Optimizer optimizer;
+                    optimizer.optimize(root);
+
+                    result << root->print(0) << '\n';
+                } else {
+                    for (const SemanticError& error : errors) {
+                        result << error.what() << '\n';
+                    }
+                }
+            } else {
+                result << (parser_error.empty() ? "Parser Error" : parser_error) << '\n';
+            }
+
+            delete root;
+        } catch (const std::exception& e) {
+            result << e.what() << std::endl;
+        }
+
+        std::cout << entry.path() << " -> " << result_path << std::endl;
+    }
+
+    return 0;
+}

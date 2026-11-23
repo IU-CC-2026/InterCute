@@ -1,0 +1,118 @@
+Program
+	statements:
+		Print
+			expressions:
+				BinaryExpression
+					operator: -
+					left:
+						BinaryExpression
+							operator: *
+							left:
+								BinaryExpression
+									operator: +
+									left:
+										IntLiteral: 2
+									right:
+										IntLiteral: 3
+							right:
+								IntLiteral: 4
+					right:
+						BinaryExpression
+							operator: /
+							left:
+								IntLiteral: 6
+							right:
+								IntLiteral: 2
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						IntLiteral: 1
+					right:
+						RealLiteral: 2.500000
+		Print
+			expressions:
+				BinaryExpression
+					operator: <
+					left:
+						IntLiteral: 3
+					right:
+						IntLiteral: 5
+		Print
+			expressions:
+				BinaryExpression
+					operator: and
+					left:
+						UnaryExpression
+							operator: not 
+							expression:
+								BoolLiteral: false
+					right:
+						BinaryExpression
+							operator: xor
+							left:
+								BoolLiteral: true
+							right:
+								BoolLiteral: false
+		Print
+			expressions:
+				UnaryExpression
+					operator: -
+					expression:
+						BinaryExpression
+							operator: +
+							left:
+								IntLiteral: 2
+							right:
+								IntLiteral: 3
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						StringLiteral: "hel"
+					right:
+						StringLiteral: "lo"
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						Array
+							items:
+								IntLiteral: 1
+								IntLiteral: 2
+					right:
+						Array
+							items:
+								IntLiteral: 3
+		Print
+			expressions:
+				BinaryExpression
+					operator: +
+					left:
+						Tuple
+							items:
+								TupleElement
+									identifier: a
+									expression:
+										IntLiteral: 1
+					right:
+						Tuple
+							items:
+								TupleElement
+									identifier: b
+									expression:
+										IntLiteral: 2
+		Print
+			expressions:
+				BinaryExpression
+					operator: /
+					left:
+						UnaryExpression
+							operator: -
+							expression:
+								IntLiteral: 5
+					right:
+						IntLiteral: 2

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/.." || exit 1
+
+bison -d -o parser/parser.cpp parser/parser.y || exit 1
+
+g++ semantic/test.cpp lexer/lexer.cpp ast/ast.cpp \
+    parser/adapter.cpp parser/parser.cpp \
+    semantic/analyzer/semantic_analyzer.cpp \
+    semantic/optimizer/optimizer.cpp \
+    -o semantic/cute_semantic || exit 1
+
+./semantic/cute_semantic

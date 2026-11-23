@@ -1,0 +1,43 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: max
+					expression:
+						FunctionLiteral
+							arguments:
+								a
+								b
+							body:
+								BlockBody
+									statements:
+										If
+											condition:
+												BinaryExpression
+													operator: >
+													left:
+														Reference
+															identifier: a
+													right:
+														Reference
+															identifier: b
+											then:
+												Return
+													result:
+														Reference
+															identifier: a
+											else:
+												Return
+													result:
+														Reference
+															identifier: b
+		Print
+			expressions:
+				Reference
+					identifier: max
+					suffixes:
+						CallSuffix
+							arguments:
+								IntLiteral: 10
+								IntLiteral: 20

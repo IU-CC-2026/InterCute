@@ -1,0 +1,13 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: a
+				VariableDefinition
+					identifier: b
+				VariableDefinition
+					identifier: c
+		Print
+			expressions:
+				StringLiteral: "Not used"

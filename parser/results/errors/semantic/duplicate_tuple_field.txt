@@ -1,0 +1,17 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: t
+					expression:
+						Tuple
+							items:
+								TupleElement
+									identifier: a
+									expression:
+										IntLiteral: 1
+								TupleElement
+									identifier: a
+									expression:
+										IntLiteral: 2

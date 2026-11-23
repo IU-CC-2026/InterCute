@@ -12,13 +12,13 @@ Program
 							body:
 								BlockBody
 									statements:
-										Assignment
-											reference:
-												Reference
+										Declaration
+											definitions:
+												VariableDefinition
 													identifier: result_tup
-											expression:
-												Tuple
-													items: []
+													expression:
+														Tuple
+															items: []
 										ForRangeLoop
 											identifier: i
 											first_expr:

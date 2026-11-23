@@ -1,5 +1,1 @@
-Program
-	statements:
-		Print
-			expressions:
-				StringLiteral: "hello /* world */"
+hello /* world */

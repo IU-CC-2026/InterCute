@@ -1,0 +1,13 @@
+Program
+	statements:
+		ForRangeLoop
+			identifier: i
+			first_expr:
+				IntLiteral: 1
+			second_expr:
+				StringLiteral: "three"
+			body:
+				Print
+					expressions:
+						Reference
+							identifier: i

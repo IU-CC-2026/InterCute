@@ -1,7 +1,7 @@
 VAR(var)
 IDENTIFIER(s)
 ASSIGN(:=)
-STRING_LITERAL("hello")
+STRING_LITERAL(hello)
 NEWLINE(\n)
 NEWLINE(\n)
 PRINT(print)

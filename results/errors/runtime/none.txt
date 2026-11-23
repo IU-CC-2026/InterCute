@@ -1,15 +1,1 @@
-Program
-	statements:
-		Declaration
-			definitions:
-				VariableDefinition
-					identifier: x
-		Print
-			expressions:
-				BinaryExpression
-					operator: +
-					left:
-						Reference
-							identifier: x
-					right:
-						IntLiteral: 10
+Runtime error at line 3, column 7: Unsupported binary operator '+' for 'none' and 'int'

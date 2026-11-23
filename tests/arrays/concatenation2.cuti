@@ -1,0 +1,19 @@
+var arr1 := [1, 2, 3]
+var arr2 := [8, 9, 5]
+
+var merged := arr1 + arr2
+
+arr1[1] := 3
+arr2[2] := 4
+
+print arr1
+print arr2
+print merged
+
+/* Expected result:
+[3, 2, 3]
+[8, 4, 5]
+[1, 2, 3, 8, 9, 5]
+*/
+
+// Order does not matter for arrays with keys

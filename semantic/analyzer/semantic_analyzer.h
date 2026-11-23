@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <stdexcept>
 
-#include "../ast/ast.h"
+#include "../../ast/ast.h"
 
 
 class SemanticError : public std::runtime_error {

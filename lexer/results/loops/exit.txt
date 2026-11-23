@@ -1,7 +1,7 @@
 LOOP(loop)
 NEWLINE(\n)
 PRINT(print)
-STRING_LITERAL("stop")
+STRING_LITERAL(stop)
 NEWLINE(\n)
 EXIT(exit)
 NEWLINE(\n)

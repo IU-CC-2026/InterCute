@@ -1,0 +1,40 @@
+Program
+	statements:
+		Declaration
+			definitions:
+				VariableDefinition
+					identifier: tup
+					expression:
+						Tuple
+							items:
+								TupleElement
+									expression:
+										Tuple
+											items:
+												TupleElement
+													expression:
+														IntLiteral: 1
+												TupleElement
+													expression:
+														Tuple
+															items:
+																TupleElement
+																	expression:
+																		IntLiteral: 2
+								TupleElement
+									expression:
+										StringLiteral: "hi"
+		Print
+			expressions:
+				Reference
+					identifier: tup
+					suffixes:
+						TupleIndexSuffix
+							index:
+								IntLiteral: 1
+						TupleIndexSuffix
+							index:
+								IntLiteral: 2
+						TupleIndexSuffix
+							index:
+								IntLiteral: 1

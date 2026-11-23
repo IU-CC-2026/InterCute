@@ -1,0 +1,32 @@
+Program
+	statements:
+		Print
+			expressions:
+				IntLiteral: 6
+		Print
+			expressions:
+				IntLiteral: 8
+		Print
+			expressions:
+				IntLiteral: 2
+		Print
+			expressions:
+				IntLiteral: 0
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				BoolLiteral: false
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				BoolLiteral: true
+		Print
+			expressions:
+				RealLiteral: -12.200000
+		Print
+			expressions:
+				BoolLiteral: false
