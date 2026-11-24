@@ -1,0 +1,42 @@
+// 5.1: the right operand must not be evaluated.
+var zero := 0
+print true or (1 / zero > 0)
+print false and (1 / zero > 0)
+
+// 5.2: xor must return bool.
+var left := true
+var right := false
+var xor_result := left xor right
+print xor_result
+print xor_result is bool
+
+// 5.3: an optimized block must preserve its scope.
+var x := 1
+if true then
+    var x := 2
+    print x
+end
+print x
+
+// 5.4: a nested call must not cancel return.
+var g := func() => 7
+var f := func(flag) is
+    if flag then
+        return g()
+    end
+    print "BAD"
+    return 0
+end
+print f(true)
+
+// 5.5: a function without return must produce none.
+var no_return := func() is
+    print g()
+end
+var result := no_return()
+print result is none
+
+// 5.6: evaluating an index must not invalidate the array reference.
+var a := [10, 20]
+var index := func() => 1
+print a[index()]

@@ -207,7 +207,7 @@ Value Interpreter::evaluate_binary(Value left, Value right, BinaryOperator op, S
                 break;
 
             case BinaryOperator::XOR:
-                result = Value(left_value ^ right_value);
+                result = Value(left_value != right_value);
                 break;
 
             default:
@@ -455,9 +455,9 @@ void Interpreter::interpret_statement(Statement* statement) {
     } else if (auto* assignment = dynamic_cast<Assignment*>(statement)) {
         Value val = this->interpret_expression(assignment->expr);
 
-        Value& target = this->interpret_reference(assignment->ref, true);
+        auto target = this->interpret_reference(assignment->ref, true);
 
-        target = val;
+        *target.value = val;
     } else if (auto* if_st = dynamic_cast<If*>(statement)) {
         Value cond_value = this->interpret_expression(if_st->condition);
 
@@ -634,20 +634,21 @@ void Interpreter::interpret_statement(Statement* statement) {
             if (this->return_flag) break;
         }
     } else if (auto* return_st = dynamic_cast<Return*>(statement)) {
+        Value result = return_st->result
+            ? this->interpret_expression(return_st->result)
+            : Value(std::monostate{});
+        this->return_value = std::move(result);
         this->return_flag = true;
-        
-        if (return_st->result == nullptr)
-            this->return_value = Value(std::monostate{});
-        else
-            this->return_value = this->interpret_expression(return_st->result);
     } else if (auto* exit_st = dynamic_cast<Exit*>(statement)) {
         this->exit_flag = true;
     } else if (auto* block = dynamic_cast<Block*>(statement)) {
+        this->enter_scope();
         for (Statement* statement : block->statements) {
             this->interpret_statement(statement);
 
             if (this->exit_flag || this->return_flag) break;
         }
+        this->exit_scope();
     }
 }
 
@@ -658,6 +659,14 @@ Value Interpreter::interpret_expression(Expression* expression) {
 
     if (auto* bin_expr = dynamic_cast<BinaryExpression*>(expression)) {
         Value left = this->interpret_expression(bin_expr->left);
+        if (bin_expr->op == BinaryOperator::AND || bin_expr->op == BinaryOperator::OR) {
+            if (left.get_type() != VariableType::BOOL)
+                throw RuntimeError(bin_expr->loc.first_line, bin_expr->loc.first_column, "Logical operand should be bool");
+            bool lhs = std::get<bool>(left.get_value());
+            // Evaluate the right operand only when and/or still needs its value
+            if (bin_expr->op == BinaryOperator::AND && !lhs) return Value(false);
+            if (bin_expr->op == BinaryOperator::OR && lhs) return Value(true);
+        }
         Value right = this->interpret_expression(bin_expr->right);
 
         return this->evaluate_binary(left, right, bin_expr->op, bin_expr->loc);
@@ -666,9 +675,11 @@ Value Interpreter::interpret_expression(Expression* expression) {
 
         return this->evaluate_unary(operand, unary_expr->op, unary_expr->loc);
     } else if (auto* ref = dynamic_cast<Reference*>(expression)) {
-        return this->interpret_reference(ref, false);
+        auto resolved = this->interpret_reference(ref, false);
+        return *resolved.value;
     } else if (auto* is = dynamic_cast<Is*>(expression)) {
-        Value ref_value = this->interpret_reference(is->ref);
+        auto resolved = this->interpret_reference(is->ref);
+        Value ref_value = *resolved.value;
 
         return Value(ref_value.get_type() == is->type);
     } else if (auto* array = dynamic_cast<Array*>(expression)) {
@@ -722,10 +733,12 @@ Value Interpreter::interpret_expression(Expression* expression) {
 }
 
 
-Value& Interpreter::interpret_reference(Reference* reference, bool for_assignment) {
+ResolvedReference Interpreter::interpret_reference(Reference* reference, bool for_assignment) {
     if (reference == nullptr)
         throw RuntimeError("Null reference");
 
+    
+    std::shared_ptr<Value> owner;
     Value* current = this->get_variable(reference->identifier);
     if (current == nullptr)
         throw RuntimeError(reference->loc.first_line, reference->loc.first_column, "Variable '" + reference->identifier + "' is not declared");
@@ -737,6 +750,8 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
             if (current->get_type() != VariableType::ARRAY)
                 throw RuntimeError(reference->loc.first_line, reference->loc.first_column, "Non-array type cannot be indexed");
 
+            auto base = std::make_shared<Value>(*current);
+            auto array_data = std::get<std::shared_ptr<ArrayData>>(base->get_value()); 
             Value index_val = this->interpret_expression(array_idx->index);
 
             if (index_val.get_type() != VariableType::INT)
@@ -744,8 +759,7 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
 
             int index = std::get<int>(index_val.get_value());
 
-            auto array_data = std::get<std::shared_ptr<ArrayData>>(current->get_value());
-
+            
             auto it = array_data->items.find(index);
             if (it == array_data->items.end()) {
                 if (!for_assignment)
@@ -762,6 +776,7 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
             
             it = array_data->items.find(index);
             current = &it->second;
+            owner = std::move(base);
 
         } else if (auto* call = dynamic_cast<CallSuffix*>(suffix)) {
             if (current->get_type() != VariableType::FUNC)
@@ -777,7 +792,7 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
                 evaluated_args.push_back(this->interpret_expression(arg));
             }
 
-            auto caller_scopes = this->scopes;
+            auto caller_scopes = std::move(this->scopes);
             this->scopes = function_data->captured_scopes;
 
             this->enter_scope();
@@ -789,9 +804,10 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
 
             this->return_value = Value(std::monostate{});
             this->return_flag = false;
-
+            
+            Value call_result(std::monostate{});
             if (auto* short_body = dynamic_cast<ShortFunctionBody*>(function_data->body)) {
-                this->return_value = this->interpret_expression(short_body->expr);
+                call_result = this->interpret_expression(short_body->expr);
             } else if (auto* block_body = dynamic_cast<BlockBody*>(function_data->body)) {
                 for (Statement* statement : block_body->statements) {
                     this->interpret_statement(statement);
@@ -800,11 +816,15 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
                 }
             }
 
-            current = &this->return_value;
+            if (dynamic_cast<BlockBody*>(function_data->body) && this->return_flag)
+                call_result = this->return_value;
+            owner = std::make_shared<Value>(std::move(call_result));
+            current = owner.get();
+
 
             this->exit_scope();
 
-            this->scopes = caller_scopes;
+            this->scopes = std::move(caller_scopes);
 
             this->return_flag = false;
         } else if (auto* member = dynamic_cast<MemberSuffix*>(suffix)) {
@@ -841,5 +861,5 @@ Value& Interpreter::interpret_reference(Reference* reference, bool for_assignmen
         }
     }
 
-    return *current;
+    return {current, std::move(owner)};
 }

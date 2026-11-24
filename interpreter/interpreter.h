@@ -70,6 +70,11 @@ private:
         std::shared_ptr<FunctionData>> value;
 };
 
+struct ResolvedReference {
+    Value* value;
+    std::shared_ptr<Value> owner;
+};
+
 std::string value_to_string(const Value& val);
 
 struct ArrayData {
@@ -105,7 +110,7 @@ private:
 
     void interpret_statement(Statement* statement);
     Value interpret_expression(Expression* expression);
-    Value& interpret_reference(Reference* reference, bool for_assignment = false);
+    ResolvedReference interpret_reference(Reference* reference, bool for_assignment = false);
 
     Value evaluate_binary(Value left, Value right, BinaryOperator op, SourceLocation loc);
     Value evaluate_unary(Value operand, UnaryOperator op, SourceLocation loc);
